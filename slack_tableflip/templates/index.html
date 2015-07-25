@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{{ project.name_full }}</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pygment_trac.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  	{% if request.args.success == '1' %}
+  		<div class="alert">
+    		<p>
+	    		<span class="close">&times;</span>
+	    		<strong>Success!</strong> You are ready to start flipping tables!
+	    	</p>
+  		</div>
+    {% endif %}
+    <div class="wrapper">
+      <header>
+        <h1>{{ project.name_full }}</h1>
+        <p>{{ project.summary }}</p>
+        <p class="view"><a href="http://github.com/ErinMorelli/em-slack-tableflip">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
+        <ul>
+          <li><a href="https://github.com/ErinMorelli/em-slack-tableflip/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ErinMorelli/em-slack-tableflip/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ErinMorelli/em-slack-tableflip">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Let’s Flip Some Tables!</h1>
+
+		<p>Built using David Lyon’s <a href="https://github.com/lyonsinbeta/table-flip">Table Flip as a Service</a>.</p>
+		
+		<hr>
+		
+		<h2 id="setup">Setup</h2>
+		
+		<ol>
+			<li>
+				<p>Add a new <strong>Slash Command</strong> by going to:</p>
+				<pre><code>https://{your-team}.slack.com/services/new/slash-commands</code></pre>
+			</li>
+			<li>
+				Use one of the following options as your new command:
+				<ul>
+					{% for allowed_command in allowed_commands %}
+						<li><code>{{ allowed_command }}</code></li>
+					{% endfor %}
+				</ul>
+				<p>
+					<small><strong>Note:</strong> Table flipping will not work without one of these specific slash commands.</small>
+				</p>
+			</li>
+			<li>
+				<p>Set the <strong>URL</strong> field to:</p>
+				<pre><code>http://dev.erinmorelli.com/slack/flip/table</code></pre>
+			</li>
+			<li>
+				<p>Set the <strong>Method</strong> option to <strong>POST</strong></p>
+			</li>
+			<li>
+				Some optional, but useful extra steps:<br />
+				<ul>
+					<li>Check the box next to <strong>Show this command in the autocomplete list</strong>.</li>
+					<li>Set the <strong>Description</strong> field to <code>"Flip some tables"</code>.</li>
+					<li>Set the <strong>Usage hint</strong> field to <code>"[type] (or 'help', 'list')"</code>.</li>
+					<li>Set the <strong>Descriptive Label</strong> field to <code>"{{ project.name_full }}"</code>.</li>
+				</ul>
+			</li>
+			<li>
+				And finally, click the <strong>Save Integration</strong> button. Check out the <a href="#usage">usage</a> section to get started flipping!
+			</li>
+		</ol>
+		
+		<hr>
+		
+		<h2 id="usage">Usage</h2>
+		
+		<p><strong>Note:</strong> These examples use <code>/flip</code> as the slash command, but yours may vary based on what you selected for step 2 during the <a href="setup">setup</a> process.</p>
+		
+		<p>Use command <code>/flip help</code> to view this usage information from within Slack.</p>
+		
+		<p><strong>Basic Flip:</strong></p>
+		
+		<pre><code>/flip</code></pre>
+		
+		<p><strong>Special Flips:</strong></p>
+		
+		<pre><code>/flip [type]</code></pre>
+		
+		<p>Available flip types:</p>
+		
+		<ul>
+			{% for type, description in allowed_types.iteritems() %}
+				<li><code>{{ type }}</code> - {{ description }}</li>
+			{% endfor %}
+		</ul>
+		
+		<p>Use command <code>/flip list</code> to view this list from within Slack.
+		
+		<p><strong>Word Flips:</strong></p>
+		
+		<pre><code>/flip word [word]</code></pre>
+		
+		<p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/flip word hello world</code></p>
+		
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="http://github.com/ErinMorelli">Erin Morelli</a></p>
+        <p><small>Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scale.fix.js') }}"></script>
+  </body>
+</html>

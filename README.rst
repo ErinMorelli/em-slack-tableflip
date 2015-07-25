@@ -20,4 +20,3 @@ See [this list](https://github.com/lyonsinbeta/table-flip#available-flips) for a
 **Word Flips:**
 
     /flip word [word]
-

@@ -1,0 +1,8 @@
+# Basic relevant text files
+include LICENSE README.rst
+
+# Include template files
+recursive-include slack_tableflip/templates *
+
+# Exclude junk
+global-exclude .DS_Store
