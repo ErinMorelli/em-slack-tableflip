@@ -1,5 +1,5 @@
 # Basic relevant text files
-include LICENSE README.rst
+include LICENSE README.md
 
 # Include template files
 recursive-include slack_tableflip/templates *
