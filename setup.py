@@ -47,7 +47,7 @@ setup(
     license='MIT',
     platforms='Linux, OSX',
     description='Flip some tables on Slack.',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
 
     packages=[
         'slack_tableflip',
