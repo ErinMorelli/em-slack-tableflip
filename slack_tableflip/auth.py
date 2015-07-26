@@ -27,7 +27,7 @@ from urllib import urlencode
 from datetime import timedelta
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO
-from slack_tableflip.storage import AppInfo, Users, db
+from slack_tableflip.storage import AppInfo, Users, DB
 from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
@@ -168,8 +168,8 @@ def validate_return(args):
 
     try:
         # Attempt to store new user
-        db.session.add(new_user)
-        db.session.commit()
+        DB.session.add(new_user)
+        DB.session.commit()
 
     except IntegrityError:
         # User already exists

@@ -23,9 +23,7 @@ Module: slack_tableflip.flipper
 '''
 
 import argparse
-import requests
 import slack_tableflip as stf
-from urllib import quote_plus
 from slacker import Chat, Error
 from slack_tableflip.storage import Users
 
@@ -55,7 +53,7 @@ class FlipParser(argparse.ArgumentParser):
             help_msg = "*{app_name}* can flip all kinds of tables for you!\n"
             help_msg += "Here are some examples:\n\n"
             help_msg += "`{command}`\n\tFlips a classic table\n\n"
-            help_msg += "`{command} patience`\n\tPuts the table back\n\n"
+            help_msg += "`{command} relax`\n\tPuts a table back\n\n"
             help_msg += "`{command} word table`\n\tFlips the word 'table'\n\n"
             help_msg += "`{command} list`\n\tLists available flip types\n\n"
             help_msg += "`{command} help`\n\tShows this message\n"
@@ -67,10 +65,13 @@ class FlipParser(argparse.ArgumentParser):
 
         elif req_type == 'list':
             list_msg = "*{app_name}* knows these types of flips:\n\n"
-            list_msg += "`{command}` - the classic\n"
 
-            for allowed_type, desc in stf.allowed_types.iteritems():
-                flip_msg = " {0}` - {1}\n".format(allowed_type, desc)
+            for allowed_type, desc in stf.ALLOWED_TYPES.iteritems():
+                if 'allowed_type' == 'classic':
+                    flip_msg = ' - {0}'.format(desc)
+                else:
+                    flip_msg = " {0}` - {1}\n".format(allowed_type, desc)
+
                 list_msg += "`{command}" + flip_msg
 
             ERRORS.append(list_msg.format(
@@ -95,8 +96,8 @@ class TypeAction(argparse.Action):
             return
 
         # Check that the type is valid
-        if flip_type not in stf.allowed_types:
-            parser.error('Flip type "{0}" is not valid'.format(flip_type))
+        if flip_type not in stf.ALLOWED_TYPES:
+            parser.error('Flip type "{0}" is not known'.format(flip_type))
 
         if flip_type == 'word':
 
@@ -105,7 +106,7 @@ class TypeAction(argparse.Action):
                 flip_word = ' '.join(values[1:len(values)])
 
             else:
-                parser.error('Flip type "word" requires a word to flip')
+                parser.error('Flip type "word" requires words to flip')
 
         # Set values
         setattr(namespace, 'flip_type', flip_type)
@@ -154,24 +155,32 @@ def check_user(args):
     return True, user.token
 
 
+def do_word_flip(words):
+    ''' Flips some words
+    '''
+
+    # Flip characters using mapping
+    char_list = [stf.FLIPPED_CHARS.get(char, char) for char in words]
+    char_list.reverse()
+
+    return ''.join(char_list)
+
+
 def do_flip(flip_type, flip_word=None):
     ''' Requests a flip from TFaaS
     '''
-    params = flip_type
 
     # Fall back to a basic flip
     if flip_type == '':
-        params = 'flipping'
+        flip_type = 'classic'
 
-    # Set params for word flip
     if flip_word is not None:
-        params = 'flipping/{0}'.format(quote_plus(flip_word))
+        # Do a word flip
+        return do_word_flip(flip_word)
 
-    # Generate flip request url
-    flip_url = 'http://table-flip.herokuapp.com/{0}'.format(params)
-
-    # Make request
-    return requests.get(flip_url).text
+    else:
+        # Do a regular flip
+        return stf.ALLOWED_TYPES[flip_type]
 
 
 def send_flip(token, table, args):
@@ -208,7 +217,7 @@ def flip(args):
     ERRORS = []
 
     # Make sure this is a valid slash command
-    if args['command'] not in stf.allowed_commands:
+    if args['command'] not in stf.ALLOWED_COMMANDS:
         return '"{0}" is not an allowed command'.format(args['command'])
 
     else:
@@ -246,7 +255,7 @@ def flip(args):
         flip_type = result.flip_type
         flip_word = result.flip_word
 
-    # Get requested flip from TFaaS
+    # Get requested flip
     table = do_flip(flip_type, flip_word)
 
     # Post flip as user

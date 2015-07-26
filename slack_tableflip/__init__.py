@@ -20,7 +20,7 @@ Module: slack_tableflip
     - Sets up Flask application and module constants
 '''
 
-from os import path
+import os
 from flask import Flask
 from datetime import date
 from pkginfo import Installed
@@ -66,7 +66,7 @@ def set_project_info():
 PROJECT_INFO = set_project_info()
 
 # Set the template directory
-TEMPLATE_DIR = path.join(PROJECT_INFO['package_path'], 'templates')
+TEMPLATE_DIR = os.path.join(PROJECT_INFO['package_path'], 'templates')
 
 # Set required args
 REQUIRED_ARGS = [
@@ -86,24 +86,103 @@ ALLOWED_COMMANDS = [
 ]
 
 # Allowed flip types
+# Sources:
+#   http://www.emoticonfun.org/flip/
+#   http://emojicons.com/table-flipping
 ALLOWED_TYPES = {
-    'patience': 'no flip',
-    'pudgy': 'fat flip',
-    'battle': 'fight to flip',
-    'me': "the table's revenge",
-    'aggravated': "FFFUUUUUU",
-    'putback': 'peace at last',
-    'dude': 'no tables nearby',
-    'emotional': 'I know that feel, bro',
-    'freakout': 'screw this game!',
-    'hercules': 'RAWR!',
-    'jedi': 'flip or flip not, there is no try',
-    'bear': 'but this table flipped just right',
-    'magical': 'not just an illusion',
-    'robot': 'all the good table flipping jobs...',
-    'russia': 'in Soviet Russia table flip you',
-    'happy': 'all smiles',
-    'word': 'flip a word of your choice'
+    'classic': "(╯°□°)╯︵ ┻━┻",
+    'rage': "(ﾉಥ益ಥ）ﾉ﻿ ┻━┻",
+    'whoops': "┬──┬﻿ ¯\_(ツ)",
+    'two': "┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻",
+    'relax': "┬─┬ノ( º _ ºノ)",
+    'teeth': "(ノಠ益ಠ)ノ彡┻━┻",
+    'monocle': "(╯ಠ_ರೃ)╯︵ ┻━┻",
+    'person': "(╯°□°）╯︵ /(.□. \)",
+    'jake': "(┛❍ᴥ❍﻿)┛彡┻━┻",
+    'owl': "(ʘ∇ʘ)ク 彡 ┻━┻",
+    'laptop': "(ノÒ益Ó)ノ彡▔▔▏",
+    'strong': "/(ò.ó)┛彡┻━┻",
+    'yelling': "(┛◉Д◉)┛彡┻━┻",
+    'shrug': "┻━┻ ︵﻿ ¯\(ツ)/¯ ︵ ┻━┻",
+    'pudgy': "(ノ ゜Д゜)ノ ︵ ┻━┻",
+    'battle': "(╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)",
+    'return': "(ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)",
+    'cry': "(╯'□')╯︵ ┻━┻",
+    'freakout': "(ﾉಥДಥ)ﾉ︵┻━┻･/",
+    'people': "(/ .□.)\ ︵╰(゜Д゜)╯︵ /(.□. \)",
+    'force': "(._.) ~ ︵ ┻━┻",
+    'bear': "ʕノ•ᴥ•ʔノ ︵ ┻━┻",
+    'magic': "(/¯◡ ‿ ◡)/¯ ~ ┻━┻",
+    'robot': "┗[© ♒ ©]┛ ︵ ┻━┻",
+    'opposite': "ノ┬─┬ノ ︵ ( \o°o)\\",
+    'cute': "┻━┻ ︵ ლ(⌒-⌒ლ)"
+}
+
+# Flipped character mapping
+FLIPPED_CHARS = {
+    " ": " ",
+    "a": "ɐ",
+    "b": "q",
+    "c": "ɔ",
+    "d": "p",
+    "e": "ǝ",
+    "f": "ɟ",
+    "g": "ƃ",
+    "h": "ɥ",
+    "i": "ı",
+    "j": "ɾ",
+    "k": "ʞ",
+    "l": "l",
+    "m": "ɯ",
+    "n": "u",
+    "o": "o",
+    "p": "d",
+    "q": "b",
+    "r": "ɹ",
+    "s": "s",
+    "t": "ʇ",
+    "u": "n",
+    "v": "ʌ",
+    "w": "ʍ",
+    "x": "x",
+    "y": "ʎ",
+    "z": "z",
+    "A": "∀",
+    "B": "q",
+    "C": "Ɔ",
+    "D": "p",
+    "E": "Ǝ",
+    "F": "Ⅎ",
+    "G": "פ",
+    "H": "H",
+    "I": "I",
+    "J": "ſ",
+    "K": "ʞ",
+    "L": "˥",
+    "M": "W",
+    "N": "N",
+    "O": "O",
+    "P": "Ԁ",
+    "Q": "Q",
+    "R": "ɹ",
+    "S": "S",
+    "T": "┴",
+    "U": "∩",
+    "V": "Λ",
+    "W": "M",
+    "X": "X",
+    "Y": "⅄",
+    "Z": "Z",
+    ",": "'",
+    "!": "¡",
+    "?": "¿",
+    "(": ")",
+    ")": "(",
+    "[": "]",
+    "]": "[",
+    ".": "˙",
+    '"': ",,",
+    "'": ","
 }
 
 # =============================================================================
@@ -118,8 +197,8 @@ APP = Flask(
 )
 
 # Set up flask config
-# CUSTOMIZE THESE VALUES FOR YOUR OWN INSTALLATION
+# SET THESE ENV VALUES FOR YOUR OWN INSTALLATION
 APP.config.update({
-    'SQLALCHEMY_DATABASE_URI': 'mysql://username:password@host:port/database',
-    'SECRET_KEY': 'set_custom_key_for_your_installation'
+    'SQLALCHEMY_DATABASE_URI': os.environ['EMST_DATABASE_URI'],
+    'SECRET_KEY': os.environ['EMST_SECRET_KEY']
 })
