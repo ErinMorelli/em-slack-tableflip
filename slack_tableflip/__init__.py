@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 # EM Slack Tableflip
@@ -21,9 +21,10 @@ Module: slack_tableflip
 '''
 
 import os
+import logging
 from flask import Flask
 from datetime import date
-from pkginfo import Installed
+from pkginfo import Installed, Develop
 from pkg_resources import get_provider
 
 
@@ -46,10 +47,9 @@ def set_project_info():
     # Get app info from the dist
     app_name = 'slack_tableflip'
     provider = get_provider(app_name)
-    dist = Installed(app_name).__dict__
 
-    # Set extra info
-    dist.update({
+    return {
+        'name': app_name,
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
         'version_int': 0.101,
@@ -58,9 +58,7 @@ def set_project_info():
         'base_url': base_url,
         'auth_url': '{0}/authenticate'.format(base_url),
         'valid_url': '{0}/validate'.format(base_url)
-    })
-
-    return dist
+    }
 
 # Project info
 PROJECT_INFO = set_project_info()

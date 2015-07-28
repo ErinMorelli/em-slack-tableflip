@@ -90,29 +90,34 @@
 
                 <pre><code>/flip</code></pre>
 
+                <p><strong>Word Flips:</strong></p>
+
+                <pre><code>/flip word [word]</code></pre>
+
+                <p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/flip word hello world</code> produces: <code>(╯°□°)╯︵ plɹoM ollǝH</code></p>
+
                 <p><strong>Special Flips:</strong></p>
 
                 <pre><code>/flip [type]</code></pre>
 
                 <p>Available flip types:</p>
 
-                <ul>
-                    {% for type, description in allowed_types.iteritems() -%}
-                        {% if type == 'classic' -%}
-                            <li><code>/flip</code> - {{ description }}</li>
-                        {%- else -%}
-                            <li><code>/flip {{ type }}</code> - {{ description }}</li>
+                <table>
+                    <tr>
+                        <td><code>/flip</code></td>
+                        <td><code>{{ allowed_types['classic'].decode('utf-8') }}</code></td>
+                    </tr>
+                    {% for (allowed_type, description) in allowed_types|dictsort(true) -%}
+                        {% if allowed_type != 'classic' -%}
+                            <tr>
+                                <td><code>/flip {{ allowed_type }}</code></td>
+                                <td><code>{{ description.decode('utf-8') }}</code></td>
+                            </tr>
                         {%- endif %}
                     {%- endfor %}
-                </ul>
+                </table>
 
                 <p>Use command <code>/flip list</code> to view this list from within Slack.
-
-                <p><strong>Word Flips:</strong></p>
-
-                <pre><code>/flip word [word]</code></pre>
-
-                <p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/flip word hello world</code></p>
 
             </section>
             <footer>

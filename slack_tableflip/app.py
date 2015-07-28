@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 # EM Slack Tableflip
@@ -17,6 +17,7 @@
 ''' Script to start Flask server for hosted table flipping
 '''
 
+import logging
 import slack_tableflip.auth as auth
 import slack_tableflip.flipper as flipper
 from flask import redirect, render_template, request
@@ -27,6 +28,7 @@ from slack_tableflip import APP, PROJECT_INFO, ALLOWED_TYPES, ALLOWED_COMMANDS
 def home():
     ''' Render app homepage template
     '''
+    logging.warning('HOME')
     return render_template(
         'index.html',
         project=PROJECT_INFO,

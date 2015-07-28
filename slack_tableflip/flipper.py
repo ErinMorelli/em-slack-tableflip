@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 # EM Slack Tableflip
@@ -163,7 +163,9 @@ def do_word_flip(words):
     char_list = [stf.FLIPPED_CHARS.get(char, char) for char in words]
     char_list.reverse()
 
-    return ''.join(char_list)
+    flipped_words = ''.join(char_list)
+
+    return "(╯°□°)╯︵ {0}".format(flipped_words)
 
 
 def do_flip(flip_type, flip_word=None):

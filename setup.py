@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #
 # EM Slack Tableflip
@@ -57,10 +57,6 @@ setup(
     package_data={
         'slack_tableflip': gen_data_files('templates')
     },
-
-    scripts=[
-        'tableflip.py'
-    ],
 
     install_requires=[
         'Flask',
