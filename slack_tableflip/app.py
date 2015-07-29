@@ -28,7 +28,6 @@ from slack_tableflip import APP, PROJECT_INFO, ALLOWED_TYPES, ALLOWED_COMMANDS
 def home():
     ''' Render app homepage template
     '''
-    logging.warning('HOME')
     return render_template(
         'index.html',
         project=PROJECT_INFO,
