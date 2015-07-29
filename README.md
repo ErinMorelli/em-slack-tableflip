@@ -32,7 +32,7 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/) and [here](http
     3. Set the **Usage** hint field to `"[type] (or 'help', 'list')"`.
     4. Set the **Descriptive Label** field to `"EM Slack Tableflip"`.
 
-6. And finally, click the **Save Integration** button. Check out the usage section to get started flipping!
+6. And finally, click the **Save Integration** button. Check out the [usage](#usage) section to get started flipping!
 
 ----------
 ## Usage
