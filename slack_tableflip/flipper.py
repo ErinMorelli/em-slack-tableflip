@@ -96,8 +96,8 @@ class TypeAction(argparse.Action):
             return
 
         # Check that the type is valid
-        if flip_type not in stf.ALLOWED_TYPES:
-            parser.error('Flip type "{0}" is not known'.format(flip_type))
+        if (flip_type not in stf.ALLOWED_TYPES) and (flip_type != 'word'):
+            parser.error('Flip type "{0}" is not known'.format(flip_type.encode('utf-8')))
 
         if flip_type == 'word':
 
@@ -160,7 +160,10 @@ def do_word_flip(words):
     '''
 
     # Flip characters using mapping
-    char_list = [stf.FLIPPED_CHARS.get(char, char) for char in words]
+    char_list = [
+    	stf.FLIPPED_CHARS.get(char.encode('utf-8'), char.encode('utf-8'))
+    	for char in words
+    ]
     char_list.reverse()
 
     flipped_words = ''.join(char_list)
