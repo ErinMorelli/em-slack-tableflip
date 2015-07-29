@@ -59,23 +59,23 @@ class FlipParser(argparse.ArgumentParser):
             help_msg += "`{command} help`\n\tShows this message\n"
 
             ERRORS.append(help_msg.format(
-                app_name=stf.project_info['name_full'],
+                app_name=stf.PROJECT_INFO['name_full'],
                 command=COMMAND
             ))
 
         elif req_type == 'list':
             list_msg = "*{app_name}* knows these types of flips:\n\n"
+            
+            classic_msg = '\n\n\t{0}\n\n'.format(stf.ALLOWED_TYPES['classic'])
+            list_msg += "`{command}`" + classic_msg
 
-            for allowed_type, desc in stf.ALLOWED_TYPES.iteritems():
-                if 'allowed_type' == 'classic':
-                    flip_msg = ' - {0}'.format(desc)
-                else:
-                    flip_msg = " {0}` - {1}\n".format(allowed_type, desc)
-
-                list_msg += "`{command}" + flip_msg
-
+            for allowed_type, desc in sorted(stf.ALLOWED_TYPES.items()):
+                if allowed_type != 'classic':
+                    flip_msg = " {0}`\n\n\t{1}\n\n".format(allowed_type, desc)
+                    list_msg += "`{command}" + flip_msg
+            
             ERRORS.append(list_msg.format(
-                app_name=stf.project_info['name_full'],
+                app_name=stf.PROJECT_INFO['name_full'],
                 command=COMMAND
             ))
 
@@ -136,8 +136,8 @@ def check_user(args):
     # Set not authenticated error message
     auth_msg = "{0} is not authorized to post on your behalf in this team: {1}"
     auth_error = auth_msg.format(
-        stf.project_info['name_full'],
-        '*<{0}|Click here to authorize>*'.format(stf.project_info['auth_url'])
+        stf.PROJECT_INFO['name_full'],
+        '*<{0}|Click here to authorize>*'.format(stf.PROJECT_INFO['auth_url'])
     )
 
     # Look for user in DB
@@ -236,7 +236,7 @@ def flip(args):
 
     # If there's no input, use the default flip
     if not args['text']:
-        flip_type = 'flipping'
+        flip_type = 'classic'
         flip_word = None
 
     else:
