@@ -24,7 +24,6 @@ import os
 import logging
 from flask import Flask
 from datetime import date
-from pkginfo import Installed, Develop
 from pkg_resources import get_provider
 
 

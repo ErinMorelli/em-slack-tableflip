@@ -65,7 +65,7 @@ class FlipParser(argparse.ArgumentParser):
 
         elif req_type == 'list':
             list_msg = "*{app_name}* knows these types of flips:\n\n"
-            
+
             classic_msg = '\n\n\t{0}\n\n'.format(stf.ALLOWED_TYPES['classic'])
             list_msg += "`{command}`" + classic_msg
 
@@ -73,7 +73,7 @@ class FlipParser(argparse.ArgumentParser):
                 if allowed_type != 'classic':
                     flip_msg = " {0}`\n\n\t{1}\n\n".format(allowed_type, desc)
                     list_msg += "`{command}" + flip_msg
-            
+
             ERRORS.append(list_msg.format(
                 app_name=stf.PROJECT_INFO['name_full'],
                 command=COMMAND
