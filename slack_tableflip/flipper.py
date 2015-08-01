@@ -19,7 +19,7 @@ Module: slack_tableflip.flipper
 
     - Parses POST data from Slack
     - Parses user flip request
-    - Retrieves and returns flip data from TFaaS
+    - Retrieves and returns flip data
 '''
 
 import argparse

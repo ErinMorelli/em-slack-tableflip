@@ -79,14 +79,6 @@ PROJECT_INFO = set_project_info()
 # Set the template directory
 TEMPLATE_DIR = os.path.join(PROJECT_INFO['package_path'], 'templates')
 
-# Set required args
-REQUIRED_ARGS = [
-    'command',
-    'team_id',
-    'user_id',
-    'channel_id'
-]
-
 # Allowed slash commands
 ALLOWED_COMMANDS = [
     '/flip',
