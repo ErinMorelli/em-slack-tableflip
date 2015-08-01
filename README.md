@@ -22,7 +22,9 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/) and [here](http
 
 3. Set the **URL** field to:
 
-        http://dev.erinmorelli.com/slack/flip
+        http://dev.erinmorelli.com/slack/flip/
+
+    **Note:** The trailing slash matters!
 
 4. Set the **Method** option to `POST`
 
