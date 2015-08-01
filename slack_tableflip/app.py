@@ -23,16 +23,21 @@ from flask import redirect, render_template, request
 from slack_tableflip import APP, PROJECT_INFO, ALLOWED_TYPES, ALLOWED_COMMANDS
 
 
-@APP.route('/')
+@APP.route('/', methods=['GET', 'POST'])
 def home():
     ''' Render app homepage template
     '''
-    return render_template(
-        'index.html',
-        project=PROJECT_INFO,
-        allowed_types=ALLOWED_TYPES,
-        allowed_commands=ALLOWED_COMMANDS
-    )
+
+    if request.method == 'POST':
+        return flipper.flip(request.form)
+
+    else:
+        return render_template(
+            'index.html',
+            project=PROJECT_INFO,
+            allowed_types=ALLOWED_TYPES,
+            allowed_commands=ALLOWED_COMMANDS
+        )
 
 
 @APP.route('/authenticate')
@@ -47,18 +52,6 @@ def validate():
     ''' Validate the returned values from authentication
     '''
     return redirect(auth.validate_return(request.args))
-
-
-@APP.route('/table', methods=['GET', 'POST'])
-def table():
-    ''' Return a flipped table from a Slack POST call
-    '''
-    use_args = request.args
-
-    if request.method == 'POST':
-        use_args = request.form
-
-    return flipper.flip(use_args)
 
 
 if __name__ == '__main__':

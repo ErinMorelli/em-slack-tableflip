@@ -22,7 +22,7 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/) and [here](http
 
 3. Set the **URL** field to:
 
-        http://dev.erinmorelli.com/slack/flip/table
+        http://dev.erinmorelli.com/slack/flip
 
 4. Set the **Method** option to `POST`
 
