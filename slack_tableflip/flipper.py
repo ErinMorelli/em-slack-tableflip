@@ -97,7 +97,11 @@ class TypeAction(argparse.Action):
 
         # Check that the type is valid
         if (flip_type not in stf.ALLOWED_TYPES) and (flip_type != 'word'):
-            parser.error('Flip type "{0}" is not known'.format(flip_type.encode('utf-8')))
+            parser.error(
+                'Flip type "{0}" is not known'.format(
+                    flip_type.encode('utf-8')
+                )
+            )
 
         if flip_type == 'word':
 
