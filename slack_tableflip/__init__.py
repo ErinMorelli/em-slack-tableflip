@@ -54,6 +54,9 @@ def set_project_info():
     ''' Set project information from setup tools installation
     '''
 
+    # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
+    base_url = 'http://dev.erinmorelli.com/slack/flip'
+
     # Get app info from the dist
     app_name = 'slack_tableflip'
     provider = get_provider(app_name)
@@ -64,7 +67,10 @@ def set_project_info():
         'author_url': 'http://www.erinmorelli.com',
         'version_int': 0.101,
         'package_path': provider.module_path,
-        'copyright': str(date.today().year)
+        'copyright': str(date.today().year),
+        'base_url': base_url,
+        'auth_url': '{0}/authenticate'.format(base_url),
+        'valid_url': '{0}/validate'.format(base_url)
     }
 
 # Project info
