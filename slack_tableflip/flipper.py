@@ -23,6 +23,7 @@ Module: slack_tableflip.flipper
 '''
 
 import argparse
+from flask import url_for
 import slack_tableflip as stf
 from slacker import Chat, Error
 from slack_tableflip.storage import Users
