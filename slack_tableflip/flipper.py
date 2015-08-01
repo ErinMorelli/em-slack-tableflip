@@ -172,7 +172,7 @@ def do_word_flip(words):
 
 
 def do_flip(flip_type, flip_word=None):
-    ''' Requests a flip from TFaaS
+    ''' Returns the requested flip
     '''
 
     # Fall back to a basic flip

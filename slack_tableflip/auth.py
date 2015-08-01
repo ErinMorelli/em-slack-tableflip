@@ -22,9 +22,9 @@ Module: slack_tableflip.auth
     - Stores authenticated user data
 '''
 
-from flask import abort
 from urllib import urlencode
 from datetime import timedelta
+from flask import abort, url_for
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO
 from slack_tableflip.storage import AppInfo, Users, DB
@@ -175,8 +175,5 @@ def validate_return(args):
         # User already exists
         abort(409)
 
-    # Set success url
-    redirect_url = '{0}?success=1'.format(PROJECT_INFO['base_url'])
-
     # Return successful
-    return redirect_url
+    return url_for('home', success=1)
