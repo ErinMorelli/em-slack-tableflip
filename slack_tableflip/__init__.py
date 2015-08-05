@@ -123,7 +123,7 @@ ALLOWED_TYPES = {
     'robot': "┗[© ♒ ©]┛ ︵ ┻━┻",
     'opposite': "ノ┬─┬ノ ︵ ( \o°o)\\",
     'cute': "┻━┻ ︵ ლ(⌒-⌒ლ)",
-    'glare': "(╯ಠ_ಠ）╯︵ ┳━┳",
+    'glare': "(╯ಠ_ಠ）╯︵ ┻━┻",
     'dead': "(╯°□°）╯︵ /(x_x)|",
     'buffet': "(╯°□°）╯︵ ┻━━━┻ ",
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ ┻━┻",
@@ -132,8 +132,34 @@ ALLOWED_TYPES = {
     'bomb': "( ・_・)ノ⌒●~*"
 }
 
+# Allowed restore flip types
+RESTORE_TYPES = {
+    'restore': "{0} ノ( º _ ºノ)",
+    'whoops': "{0} ¯\_(ツ)"
+}
+
 # Allowed word flip types
-WORD_TYPES = ['word', 'restore']
+WORD_TYPES = {
+    'word': "(╯°□°)╯︵ {0}",
+    'rage': "(ﾉಥ益ಥ）ﾉ﻿ {0}",
+    'teeth': "(ノಠ益ಠ)ノ彡{0}",
+    'monocle': "(╯ಠ_ರೃ)╯︵ {0}",
+    'jake': "(┛❍ᴥ❍﻿)┛彡{0}",
+    'owl': "(ʘ∇ʘ)ク 彡 {0}",
+    'strong': "/(ò.ó)┛彡{0}",
+    'yelling': "(┛◉Д◉)┛彡{0}",
+    'pudgy': "(ノ ゜Д゜)ノ ︵ {0}",
+    'cry': "(╯'□')╯︵ {0}",
+    'force': "(._.) ~ ︵ {0}",
+    'bear': "ʕノ•ᴥ•ʔノ ︵ {0}",
+    'magic': "(/¯◡ ‿ ◡)/¯ ~ {0}",
+    'robot': "┗[© ♒ ©]┛ ︵ {0}",
+    'cute': "{0} ︵ ლ(⌒-⌒ლ)",
+    'glare': "(╯ಠ_ಠ）╯︵ {0}",
+    'adorable': "(づ｡◕‿‿◕｡)づ ︵ {0}",
+    'hynotic': "(╯°.°）╯ {0}",
+    'bored': "(ノ゜-゜)ノ ︵ {0}"
+}
 
 # Flipped character mapping
 FLIPPED_CHARS = {

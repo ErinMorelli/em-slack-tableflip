@@ -104,21 +104,31 @@ class TypeAction(argparse.Action):
             return
 
         # Check that the type is valid
-        if (flip_type not in stf.ALLOWED_TYPES) and (flip_type not in stf.WORD_TYPES):
+        if (flip_type not in stf.ALLOWED_TYPES and
+                flip_type not in stf.WORD_TYPES and
+                flip_type != 'restore'):
             parser.error(
                 'Flip type "{0}" is not known'.format(
                     flip_type.encode('utf-8')
                 )
             )
 
-        if flip_type in stf.WORD_TYPES:
+        if (flip_type in stf.WORD_TYPES or
+                flip_type in stf.RESTORE_TYPES or
+                flip_type == 'restore'):
 
             if len(values) >= 2:
                 # Set word value
                 flip_word = ' '.join(values[1:len(values)])
 
             else:
-                parser.error('Flip type "word" requires words to flip')
+                # Check for flips that require words
+                if flip_type in ['word', 'restore']:
+                    parser.error(
+                        'Flip type "{0}"" requires words to flip'.format(
+                            flip_type.encode('utf-8')
+                        )
+                    )
 
         # Set values
         setattr(namespace, 'flip_type', flip_type)
@@ -167,7 +177,16 @@ def check_user(args):
     return True, user.token
 
 
-def do_word_flip(words):
+def do_restore_flip(flip_type, words):
+    ''' Restore a flipped word
+    '''
+
+    flip_base = stf.RESTORE_TYPES[flip_type]
+
+    return flip_base.format(words)
+
+
+def do_word_flip(flip_type, words):
     ''' Flips some words
     '''
 
@@ -180,7 +199,9 @@ def do_word_flip(words):
 
     flipped_words = ''.join(char_list)
 
-    return "(╯°□°)╯︵ {0}".format(flipped_words)
+    flip_base = stf.WORD_TYPES[flip_type]
+
+    return flip_base.format(flipped_words)
 
 
 def do_flip(flip_type, flip_word=None):
@@ -194,17 +215,16 @@ def do_flip(flip_type, flip_word=None):
     # Check for word flip
     if flip_word is not None:
 
-        if flip_type == 'restore':
+        if flip_type in stf.RESTORE_TYPES:
             # Do restore flip
-            return "{0} ノ( º _ ºノ)".format(flip_word)
+            return do_restore_flip(flip_type, flip_word)
 
-        else:
+        elif flip_type in stf.WORD_TYPES:
             # Do a word flip
-            return do_word_flip(flip_word)
+            return do_word_flip(flip_type, flip_word)
 
-    else:
-        # Do a regular flip
-        return stf.ALLOWED_TYPES[flip_type]
+    # Do a regular flip
+    return stf.ALLOWED_TYPES[flip_type]
 
 
 def send_flip(token, table, args):
