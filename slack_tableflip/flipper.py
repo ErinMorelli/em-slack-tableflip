@@ -96,14 +96,14 @@ class TypeAction(argparse.Action):
             return
 
         # Check that the type is valid
-        if (flip_type not in stf.ALLOWED_TYPES) and (flip_type != 'word'):
+        if (flip_type not in stf.ALLOWED_TYPES) and (flip_type not in stf.WORD_TYPES):
             parser.error(
                 'Flip type "{0}" is not known'.format(
                     flip_type.encode('utf-8')
                 )
             )
 
-        if flip_type == 'word':
+        if flip_type in stf.WORD_TYPES:
 
             if len(values) >= 2:
                 # Set word value
@@ -183,9 +183,16 @@ def do_flip(flip_type, flip_word=None):
     if flip_type == '':
         flip_type = 'classic'
 
+    # Check for word flip
     if flip_word is not None:
-        # Do a word flip
-        return do_word_flip(flip_word)
+
+        if flip_type == 'restore':
+            # Do restore flip
+            return "{0} ノ( º _ ºノ)".format(flip_word)
+
+        else:
+            # Do a word flip
+            return do_word_flip(flip_word)
 
     else:
         # Do a regular flip

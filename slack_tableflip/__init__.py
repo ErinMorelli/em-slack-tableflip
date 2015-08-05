@@ -65,7 +65,7 @@ def set_project_info():
         'name': app_name,
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
-        'version_int': 0.101,
+        'version_int': 0.201,
         'package_path': provider.module_path,
         'copyright': str(date.today().year),
         'base_url': base_url,
@@ -130,6 +130,9 @@ ALLOWED_TYPES = {
     'bored': "(ノ゜-゜)ノ ︵ ┻━┻",
     'bomb': "( ・_・)ノ⌒●~*"
 }
+
+# Allowed word flip types
+WORD_TYPES = ['word', 'restore']
 
 # Flipped character mapping
 FLIPPED_CHARS = {
