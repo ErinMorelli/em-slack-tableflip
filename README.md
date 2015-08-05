@@ -51,6 +51,8 @@ Use command `/flip help` to view this usage information from within Slack.
 
     /flip word [word]
 
+    /flip restore [word]
+
 **Tip:** You can enter one or multiple words, e.g. `/flip` word hello world produces: `(╯°□°)╯︵ plɹoM ollǝH`
 
 **Special Flips:**
@@ -62,11 +64,23 @@ Available flip types:
     /flip
         (╯°□°)╯︵ ┻━┻
 
+    /flip adorable
+        (づ｡◕‿‿◕｡)づ ︵ ┻━┻
+
     /flip battle
         (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)
 
     /flip bear
         ʕノ•ᴥ•ʔノ ︵ ┻━┻
+
+    /flip bomb
+        ( ・_・)ノ⌒●~*
+
+    /flip bored
+        (ノ゜-゜)ノ ︵ ┻━┻
+
+    /flip buffet
+        (╯°□°）╯︵ ┻━━━┻
 
     /flip cry
         (╯'□')╯︵ ┻━┻
@@ -74,11 +88,23 @@ Available flip types:
     /flip cute
         ┻━┻ ︵ ლ(⌒-⌒ლ)
 
+    /flip dead
+        (╯°□°）╯︵ /(x_x)|
+
     /flip force
         (._.) ~ ︵ ┻━┻
 
     /flip freakout
         (ﾉಥДಥ)ﾉ︵┻━┻･/
+
+    /flip fury
+        ┻━┻彡 ヽ(ಠДಠ)ノ彡┻━┻﻿
+
+    /flip glare
+        (╯ಠ_ಠ）╯︵ ┳━┳
+
+    /flip hypnotic
+        (╯°.°）╯ ┻━┻
 
     /flip jake
         (┛❍ᴥ❍﻿)┛彡┻━┻
@@ -128,8 +154,11 @@ Available flip types:
     /flip teeth
         (ノಠ益ಠ)ノ彡┻━┻
 
-    /flip two
+    /flip tantrum
         ┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻
+
+    /flip two
+        ┻━┻ ︵╰(°□°)╯︵ ┻━┻
 
     /flip whoops
         ┬──┬﻿ ¯\_(ツ)
