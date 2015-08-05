@@ -92,11 +92,14 @@ ALLOWED_COMMANDS = [
 # Sources:
 #   http://www.emoticonfun.org/flip/
 #   http://emojicons.com/table-flipping
+#   http://tableflipping.com/
 ALLOWED_TYPES = {
     'classic': "(╯°□°)╯︵ ┻━┻",
     'rage': "(ﾉಥ益ಥ）ﾉ﻿ ┻━┻",
     'whoops': "┬──┬﻿ ¯\_(ツ)",
-    'two': "┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻",
+    'two': "┻━┻ ︵╰(°□°)╯︵ ┻━┻",
+    'tantrum': "┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻",
+    'fury': "┻━┻彡 ヽ(ಠДಠ)ノ彡┻━┻﻿",
     'relax': "┬─┬ノ( º _ ºノ)",
     'teeth': "(ノಠ益ಠ)ノ彡┻━┻",
     'monocle': "(╯ಠ_ರೃ)╯︵ ┻━┻",
@@ -118,7 +121,14 @@ ALLOWED_TYPES = {
     'magic': "(/¯◡ ‿ ◡)/¯ ~ ┻━┻",
     'robot': "┗[© ♒ ©]┛ ︵ ┻━┻",
     'opposite': "ノ┬─┬ノ ︵ ( \o°o)\\",
-    'cute': "┻━┻ ︵ ლ(⌒-⌒ლ)"
+    'cute': "┻━┻ ︵ ლ(⌒-⌒ლ)",
+    'glare': "(╯ಠ_ಠ）╯︵ ┳━┳",
+    'dead': "(╯°□°）╯︵ /(x_x)|",
+    'buffet': "(╯°□°）╯︵ ┻━━━┻ ",
+    'adorable': "(づ｡◕‿‿◕｡)づ ︵ ┬──┬﻿",
+    'hynotic': "(╯°.°）╯ ┻━┻",
+    'bored': "(ノ゜-゜)ノ ︵ ┻━┻",
+    'bomb': "( ・_・)ノ⌒●~*"
 }
 
 # Flipped character mapping
