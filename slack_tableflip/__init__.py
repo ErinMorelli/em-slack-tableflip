@@ -65,7 +65,7 @@ def set_project_info():
         'name': app_name,
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
-        'version': '0.2b1',
+        'version': '0.3b1',
         'version_int': 0.201,
         'package_path': provider.module_path,
         'copyright': str(date.today().year),
