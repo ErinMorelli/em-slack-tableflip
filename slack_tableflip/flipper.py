@@ -79,6 +79,12 @@ class FlipParser(argparse.ArgumentParser):
                 command=COMMAND
             ))
 
+        elif req_type == 'version':
+            ERRORS.append({'{app_name} v{version}'}.format(
+                app_name=stf.PROJECT_INFO['name_full'],
+                version=stf.PROJECT_INFO['version'],
+            ))
+
 
 class TypeAction(argparse.Action):
     ''' Custom Action object for validating and parsing flip arguments
@@ -91,7 +97,7 @@ class TypeAction(argparse.Action):
         flip_word = None
 
         # Check for help
-        if flip_type in ['help', 'list']:
+        if flip_type in ['help', 'list', 'version']:
             parser.print_help(flip_type)
             return
 
