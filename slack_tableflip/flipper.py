@@ -55,6 +55,8 @@ class FlipParser(argparse.ArgumentParser):
             help_msg += "`{command}`\n\tFlips a classic table\n\n"
             help_msg += "`{command} relax`\n\tPuts a table back\n\n"
             help_msg += "`{command} word table`\n\tFlips the word 'table'\n\n"
+            help_msg += "`{command} restore table`\n\t"
+            help_msg += "Puts the word 'table' back\n\n"
             help_msg += "`{command} list`\n\tLists available flip types\n\n"
             help_msg += "`{command} help`\n\tShows this message\n"
 
