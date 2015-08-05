@@ -1,7 +1,7 @@
 # [EM Slack Tableflip](http://dev.erinmorelli.com/slack/flip)
 Flip some tables on [Slack](https://slack.com).
 
-Built using emojis from [here](http://www.emoticonfun.org/flip/) and [here](http://emojicons.com/table-flipping).
+Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://emojicons.com/table-flipping), and [here](http://tableflipping.com/).
 
 ----------
 ## Setup
