@@ -80,9 +80,9 @@ class FlipParser(argparse.ArgumentParser):
             ))
 
         elif req_type == 'version':
-            ERRORS.append({'{app_name} v{version}'}.format(
+            ERRORS.append('{app_name} v{version}'.format(
                 app_name=stf.PROJECT_INFO['name_full'],
-                version=stf.PROJECT_INFO['version'],
+                version=stf.PROJECT_INFO['version']
             ))
 
 
