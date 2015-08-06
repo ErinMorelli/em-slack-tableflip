@@ -40,7 +40,7 @@ def gen_data_files(*dirs):
 # Set up mediahandler package
 setup(
     name='em-slack-tableflip',
-    version='0.3b1',
+    version='0.1b4',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
     url='http://dev.erinmorelli.com/slack/flip',
