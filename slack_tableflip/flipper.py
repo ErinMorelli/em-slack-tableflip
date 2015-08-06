@@ -55,7 +55,7 @@ class FlipParser(argparse.ArgumentParser):
             help_msg += "`{command}`\n\tFlips a classic table\n\n"
             help_msg += "`{command} relax`\n\tPuts a table back\n\n"
             help_msg += "`{command} word table`\n\tFlips the word 'table'\n\n"
-            help_msg += "`{command} restore table`\n\t"
+            help_msg += "`{command} relax table`\n\t"
             help_msg += "Puts the word 'table' back\n\n"
             help_msg += "`{command} list`\n\tLists available flip types\n\n"
             help_msg += "`{command} help`\n\tShows this message\n"
@@ -113,19 +113,17 @@ class TypeAction(argparse.Action):
                 )
             )
 
-        if (flip_type in stf.WORD_TYPES or
-                flip_type in stf.RESTORE_TYPES or
-                flip_type == 'restore'):
+        if flip_type in stf.WORD_TYPES or flip_type in stf.RESTORE_TYPES:
 
             if len(values) >= 2:
                 # Set word value
                 flip_word = ' '.join(values[1:len(values)])
 
             else:
-                # Check for flips that require words
-                if flip_type in ['word', 'restore']:
+                # Check for flip that requires words
+                if flip_type == 'word':
                     parser.error(
-                        'Flip type "{0}"" requires words to flip'.format(
+                        'Flip type "{0}" requires words to flip'.format(
                             flip_type.encode('utf-8')
                         )
                     )

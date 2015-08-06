@@ -51,7 +51,7 @@ Use command `/flip help` to view this usage information from within Slack.
 
     /flip word [word]
 
-    /flip restore [word]
+    /flip relax [word]
 
 **Tip:** You can enter one or multiple words, e.g. `/flip` word hello world produces: `(╯°□°)╯︵ plɹoM ollǝH`
 

@@ -127,14 +127,14 @@ ALLOWED_TYPES = {
     'dead': "(╯°□°）╯︵ /(x_x)|",
     'buffet': "(╯°□°）╯︵ ┻━━━┻ ",
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ ┻━┻",
-    'hynotic': "(╯°.°）╯ ┻━┻",
+    'hypnotic': "(╯°.°）╯ ┻━┻",
     'bored': "(ノ゜-゜)ノ ︵ ┻━┻",
     'bomb': "( ・_・)ノ⌒●~*"
 }
 
 # Allowed restore flip types
 RESTORE_TYPES = {
-    'restore': "{0} ノ( º _ ºノ)",
+    'relax': "{0} ノ( º _ ºノ)",
     'whoops': "{0} ¯\_(ツ)"
 }
 
@@ -157,7 +157,7 @@ WORD_TYPES = {
     'cute': "{0} ︵ ლ(⌒-⌒ლ)",
     'glare': "(╯ಠ_ಠ）╯︵ {0}",
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ {0}",
-    'hynotic': "(╯°.°）╯ {0}",
+    'hypnotic': "(╯°.°）╯ {0}",
     'bored': "(ノ゜-゜)ノ ︵ {0}"
 }
 
