@@ -106,7 +106,7 @@ class TypeAction(argparse.Action):
         # Check that the type is valid
         if (flip_type not in stf.ALLOWED_TYPES and
                 flip_type not in stf.WORD_TYPES and
-                flip_type != 'restore'):
+                flip_type not in stf.RESTORE_TYPES):
             parser.error(
                 'Flip type "{0}" is not known'.format(
                     flip_type.encode('utf-8')
