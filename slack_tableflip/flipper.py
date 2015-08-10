@@ -23,7 +23,6 @@ Module: slack_tableflip.flipper
 '''
 
 import argparse
-from flask import url_for
 import slack_tableflip as stf
 from slacker import Chat, Error
 from slack_tableflip.storage import Users
@@ -158,7 +157,7 @@ def check_user(args):
     auth_msg = "{0} is not authorized to post on your behalf in this team: {1}"
     auth_error = auth_msg.format(
         stf.PROJECT_INFO['name_full'],
-        '*<{0}|Click here to authorize>*'.format(url_for('authenticate'))
+        '*<{0}|Click here to authorize>*'.format(stf.PROJECT_INFO['auth_url'])
     )
 
     # Look for user in DB

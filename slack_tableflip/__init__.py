@@ -52,7 +52,10 @@ def set_project_info():
         'package_path': provider.module_path,
         'copyright': str(date.today().year),
         'client_secret': os.environ['EMST_CLIENT_SECRET'],
-        'client_id': os.environ['EMST_CLIENT_ID']
+        'client_id': os.environ['EMST_CLIENT_ID'],
+        'base_url': os.environ['HOST'],
+        'auth_url': '{0}/authenticate'.format(os.environ['HOST']),
+        'valid_url': '{0}/validate'.format(os.environ['HOST'])
     }
 
 # Project info
