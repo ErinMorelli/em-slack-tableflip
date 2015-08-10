@@ -24,8 +24,6 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 
         http://slack-tableflip.herokuapp.com
 
-    **Note:** The trailing slash matters!
-
 4. Set the **Method** option to `POST`
 
 5. Some optional, but useful extra steps:
