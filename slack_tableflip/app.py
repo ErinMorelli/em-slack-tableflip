@@ -52,7 +52,3 @@ def validate():
     ''' Validate the returned values from authentication
     '''
     return redirect(auth.validate_return(request.args))
-
-
-if __name__ == '__main__':
-    APP.run()

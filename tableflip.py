@@ -17,7 +17,9 @@
 ''' Run the EM Slack Tableflip application
 '''
 
-from wsgiref.handlers import CGIHandler
-from slack_tableflip.app import APP as application
+from slack_tableflip.app import APP
 
-CGIHandler().run(application)
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    APP.run(host='0.0.0.0', port=port)
+
