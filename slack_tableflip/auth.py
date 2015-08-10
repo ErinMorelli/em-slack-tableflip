@@ -22,21 +22,18 @@ Module: slack_tableflip.auth
     - Stores authenticated user data
 '''
 
-from flask import abort
 from urllib import urlencode
 from datetime import timedelta
+from flask import abort, url_for
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO
-from slack_tableflip.storage import AppInfo, Users, DB
+from slack_tableflip.storage import Users, DB
 from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
 
-# Get app info from DB
-APP_INFO = AppInfo.query.get('flip')
-
 # Create serializer
-GENERATOR = URLSafeTimedSerializer(APP_INFO.client_secret)
+GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
 
 
 # =============================================================================
@@ -51,12 +48,12 @@ def get_redirect():
     location_base = 'https://slack.com/oauth/authorize'
 
     # Generate state token
-    state_token = GENERATOR.dumps(APP_INFO.client_id)
+    state_token = GENERATOR.dumps(PROJECT_INFO['client_id'])
 
     # URL encode params
     params = urlencode({
-        'client_id': APP_INFO.client_id,
-        'redirect_uri': PROJECT_INFO['valid_url'],
+        'client_id': PROJECT_INFO['client_id'],
+        'redirect_uri': url_for('validate'),
         'scope': 'read,post,client',
         'state': state_token
     })
@@ -91,7 +88,7 @@ def validate_state(state):
         # Token is not authorized
         abort(401)
 
-    if state_token != APP_INFO.client_id:
+    if state_token != PROJECT_INFO['client_id']:
         # Token is not authorized
         abort(401)
 
@@ -109,9 +106,9 @@ def get_user_token(code):
     try:
         # Attempt to make request
         result = oauth.access(
-            client_id=APP_INFO.client_id,
-            client_secret=APP_INFO.client_secret,
-            redirect_uri=PROJECT_INFO['valid_url'],
+            client_id=PROJECT_INFO['client_id'],
+            client_secret=PROJECT_INFO['client_secret'],
+            redirect_uri=url_for('validate'),
             code=code
         )
 
@@ -175,8 +172,5 @@ def validate_return(args):
         # User already exists
         abort(409)
 
-    # Set success url
-    redirect_url = '{0}?success=1'.format(PROJECT_INFO['base_url'])
-
     # Return successful
-    return redirect_url
+    return url_for('home', success=1)

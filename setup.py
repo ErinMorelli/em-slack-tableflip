@@ -64,7 +64,7 @@ setup(
         'pkginfo',
         'requests',
         'itsdangerous',
-        'MySQL-Python',
+        'psycopg2',
         'slacker'
     ]
 )
