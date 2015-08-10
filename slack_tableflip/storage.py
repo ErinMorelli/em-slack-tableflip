@@ -17,7 +17,7 @@
 '''
 Module: slack_tableflip.storage
 
-    - Sets database schema for storing user and app data
+    - Sets database schema for storing user data
     - Initializes database structure
 '''
 
@@ -46,24 +46,6 @@ class Users(DB.Model):
 
     def __repr__(self):
         return '<User {0}>'.format(self.id)
-
-
-class AppInfo(DB.Model):
-    ''' Table for storing application-specific data
-    '''
-    __tablename__ = 'app_info'
-
-    name = DB.Column(DB.String(120), primary_key=True)
-    client_id = DB.Column(DB.String(21))
-    client_secret = DB.Column(DB.String(32))
-
-    def __init__(self, name, client_id, client_secret):
-        self.name = name
-        self.client_id = client_id
-        self.client_secret = client_secret
-
-    def __repr__(self):
-        return '<AppInfo {0}>'.format(self.name)
 
 
 try:
