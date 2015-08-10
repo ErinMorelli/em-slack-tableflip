@@ -21,24 +21,9 @@ Module: slack_tableflip
 '''
 
 import os
-import logging
 from flask import Flask
 from datetime import date
 from pkg_resources import get_provider
-
-
-# =============================================================================
-# App Logging
-# =============================================================================
-
-__logfile__ = os.path.join(os.path.expanduser("~"), 'logs', 'tableflip.log')
-
-# Config logging
-logging.basicConfig(
-    filename=__logfile__,
-    format='%(asctime)s - %(filename)s - %(levelname)s - %(message)s',
-    level=30,
-)
 
 
 # =============================================================================
