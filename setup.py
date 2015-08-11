@@ -43,7 +43,7 @@ setup(
     version='0.1b4',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
-    url='http://dev.erinmorelli.com/slack/flip',
+    url='http://slack-tableflip.herokuapp.com',
     license='MIT',
     platforms='Linux, OSX',
     description='Flip some tables on Slack.',
