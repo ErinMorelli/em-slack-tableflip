@@ -17,10 +17,15 @@
 ''' Run the EM Slack Tableflip application
 '''
 
+import newrelic.agent
 from os import environ
 from slack_tableflip.app import APP
 
+
 if __name__ == '__main__':
+    # Start New Relic agent
+    newrelic.agent.initialize()
+
+    # Start Flask app
     port = int(environ.get("PORT", 5000))
     APP.run(host='0.0.0.0', port=port)
-
