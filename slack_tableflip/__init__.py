@@ -54,8 +54,8 @@ def set_project_info():
         'version_int': 0.115,
         'package_path': provider.module_path,
         'copyright': str(date.today().year),
-        'client_secret': os.environ['EMST_CLIENT_SECRET'],
-        'client_id': os.environ['EMST_CLIENT_ID'],
+        'client_secret': os.environ['SLACK_CLIENT_SECRET'],
+        'client_id': os.environ['SLACK_CLIENT_ID'],
         'base_url': base_url,
         'auth_url': '{0}/authenticate'.format(base_url),
         'valid_url': '{0}/validate'.format(base_url)
@@ -249,6 +249,6 @@ APP = Flask(
 # Set up flask config
 # SET THESE ENV VALUES FOR YOUR OWN INSTALLATION
 APP.config.update({
-    'SQLALCHEMY_DATABASE_URI': os.environ['EMST_DATABASE_URI'],
-    'SECRET_KEY': os.environ['EMST_SECRET_KEY']
+    'SQLALCHEMY_DATABASE_URI': os.environ['DATABASE_URL'],
+    'SECRET_KEY': os.environ['SECURE_KEY']
 })
