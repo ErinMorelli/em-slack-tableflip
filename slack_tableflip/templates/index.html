@@ -25,11 +25,11 @@
             <header>
                 <h1>{{ project.name_full }} <small>{{ project.version }}</small></h1>
                 <p>Flip some tables on <a href="https://slack.com/">Slack</a>.</p>
-                <p class="view"><a href="http://github.com/ErinMorelli/em-slack-tableflip">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
+                <p class="view"><a href="{{ project.github_url }}">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
                 <ul>
-                    <li><a href="https://github.com/ErinMorelli/em-slack-tableflip/zipball/master">Download <strong>ZIP File</strong></a></li>
-                    <li><a href="https://github.com/ErinMorelli/em-slack-tableflip/tarball/master">Download <strong>TAR Ball</strong></a></li>
-                    <li><a href="https://github.com/ErinMorelli/em-slack-tableflip">Fork On <strong>GitHub</strong></a></li>
+                    <li><a href="{{ project.github_url }}/zipball/master">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="{{ project.github_url }}/tarball/master">Download <strong>TAR Ball</strong></a></li>
+                    <li><a href="{{ project.github_url }}">Fork On <strong>GitHub</strong></a></li>
                 </ul>
             </header>
             <section>

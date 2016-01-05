@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #
 # EM Slack Tableflip
-# Copyright (c) 2015 Erin Morelli
+# Copyright (c) 2015-2016 Erin Morelli
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -50,10 +50,11 @@ def set_project_info():
         'name': app_name,
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
+        'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
         'version': '0.2',
         'version_int': 0.2,
         'package_path': provider.module_path,
-        'copyright': str(date.today().year),
+        'copyright': '2015-{0}'.format(str(date.today().year)),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
         'client_id': os.environ['SLACK_CLIENT_ID'],
         'base_url': base_url,

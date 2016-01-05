@@ -1,14 +1,21 @@
-# [EM Slack Tableflip](http://slack-tableflip.herokuapp.com)
+# [EM Slack Tableflip](https://slack-tableflip.herokuapp.com)
 Flip some tables on [Slack](https://slack.com).
 
 Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://emojicons.com/table-flipping), and [here](http://tableflipping.com/).
 
 ----------
-## Setup
+## Quick Setup
 
-1. Add a new **Slash Command** by going to:
+[Click here](https://slack-tableflip.herokuapp.com/#quick-setup) for quick setup with Slack.
 
-        https://{your-team}.slack.com/services/new/slash-commands
+----------
+## Manual Setup
+
+1. Manually add a new slash command to your team by going to:
+
+        https://{your-team}.slack.com/apps/build/custom-integration
+
+    and selecting the **Slash Commands** option.
 
 2. Use one of the following options as your new command:
 
@@ -22,7 +29,7 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 
 3. Set the **URL** field to:
 
-        http://slack-tableflip.herokuapp.com
+        https://slack-tableflip.herokuapp.com
 
 4. Set the **Method** option to `POST`
 
@@ -37,7 +44,7 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 ----------
 ## Usage
 
-**Note:** These examples use `/flip` as the slash command, but yours may vary based on what you selected for step 2 during the [setup](#setup) process.
+**Note:** These examples use `/flip` as the slash command, but yours may vary based on what you selected for step 2 during the manual setup process.
 
 Use command `/flip help` to view this usage information from within Slack.
 
