@@ -146,19 +146,26 @@ def store_user(token, info):
     ''' Stores a validated user in the database
     '''
 
-    # Create new user
-    new_user = Users(info['user_id'])
-    new_user.team = info['team_id']
-    new_user.token = token
+    # Check if user exists
+    user = DB.session.query(Users).filter(
+        Users.id==info['user_id']).filter(
+        Users.team==info['team_id']).first()
 
-    try:
-        # Attempt to store new user
+    if user is None:
+        # Create new user
+        new_user = Users(info['user_id'])
+        new_user.team = info['team_id']
+        new_user.token = token
+
+        # Store new user
         DB.session.add(new_user)
-        DB.session.commit()
 
-    except IntegrityError:
-        # User already exists
-        abort(409)
+    else:
+        # Update user token
+        user.token = token
+
+    # Update DB
+    DB.session.commit()
 
     return
 
@@ -167,18 +174,23 @@ def store_team(token, info):
     ''' Stores a validated team in the database
     '''
 
-    # Create new team
-    new_team = Teams(info['team_id'])
-    new_team.token = token
+    # Check if team exists
+    team = Teams.query.get(info['team_id'])
 
-    try:
-        # Attempt to store new team
+    if team is None:
+        # Create new team
+        new_team = Teams(info['team_id'])
+        new_team.token = token
+
+        # Store new team
         DB.session.add(new_team)
-        DB.session.commit()
 
-    except IntegrityError:
-        # Team already exists
-        abort(409)
+    else:
+        # Update team token
+        team.token = token
+
+    # Update DB
+    DB.session.commit()
 
     return
 
