@@ -27,24 +27,17 @@ from urllib import urlencode
 from datetime import timedelta
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO
-from slack_tableflip.storage import Users, DB
+from slack_tableflip.storage import Users, Teams, DB
 from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
-
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
 
 
 # Create serializer
 GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
 
 
-# =============================================================================
-#  Authentication
-# =============================================================================
-
 def get_redirect(scope='user'):
-    ''' Generates Slack user authentication URL
+    ''' Generates Slack authentication URL
     '''
 
     # Generate state token
@@ -71,12 +64,8 @@ def get_redirect(scope='user'):
     return location
 
 
-# =============================================================================
-#  State Validation
-# =============================================================================
-
 def validate_state(state):
-    ''' Validates state token returned by user authentication
+    ''' Validates state token returned by authentication
     '''
 
     try:
@@ -102,23 +91,22 @@ def validate_state(state):
     return
 
 
-# =============================================================================
-#  User Validation
-# =============================================================================
-
-def get_user_token(code):
-    ''' Requests a user token from the Slack API
+def get_token(code, scope='user'):
+    ''' Requests a token from the Slack API
     '''
 
     # Set OAuth access object
     oauth = OAuth()
+
+    # Setup return URL
+    return_url = '{0}_url'.format(scope)
 
     try:
         # Attempt to make request
         result = oauth.access(
             client_id=PROJECT_INFO['client_id'],
             client_secret=PROJECT_INFO['client_secret'],
-            redirect_uri=PROJECT_INFO['user_url'],
+            redirect_uri=PROJECT_INFO[return_url],
             code=code
         )
 
@@ -132,15 +120,19 @@ def get_user_token(code):
     return result.body['access_token']
 
 
-def get_user_info(token):
-    ''' Retrieves user information from Slack API
+def validate_token(token):
+    ''' Validates token and retrieves info from Slack API
     '''
 
     # Set auth object
     auth = Auth(token)
 
-    # Make request
-    result = auth.test()
+    try:
+        # Make request
+        result = auth.test()
+
+    except Error:
+        abort(400)
 
     # Check for errors
     if not result.successful:
@@ -150,19 +142,13 @@ def get_user_info(token):
     return result.body
 
 
-def validate_user(args):
-    ''' User-specific validation
+def store_user(token, info):
+    ''' Stores a validated user in the database
     '''
 
-    # Get user token
-    token = get_user_token(args.get('code'))
-
-    # Validate user and get info
-    user_info = validate_user(token)
-
     # Create new user
-    new_user = Users(user_info['user_id'])
-    new_user.team = user_info['team_id']
+    new_user = Users(info['user_id'])
+    new_user.team = info['team_id']
     new_user.token = token
 
     try:
@@ -173,35 +159,34 @@ def validate_user(args):
     except IntegrityError:
         # User already exists
         abort(409)
+
     return
 
 
-# =============================================================================
-#  Team Validation
-# =============================================================================
+def store_team(token, info):
+    ''' Stores a validated team in the database
+    '''
 
-def get_team_token():
+    # Create new team
+    new_team = Teams(info['team_id'])
+    new_team.token = token
+
+    try:
+        # Attempt to store new team
+        DB.session.add(new_team)
+        DB.session.commit()
+
+    except IntegrityError:
+        # Team already exists
+        abort(409)
+
     return
 
-def get_team_info():
-    return
 
-def validate_team(args):
-
-    # Get user token
-    token = get_user_token(args.get('code'))
-
-    pp.pprint(token)
-    return
-
-
-def validate_return(args, team=False):
+def validate_return(args, scope='user'):
     ''' Wrapper function for data validation functions
         Stores new authenticated user data
     '''
-
-    print args.get('state')
-    print args.get('code')
 
     # Make sure we have args
     if not args.get('state') or not args.get('code'):
@@ -210,10 +195,20 @@ def validate_return(args, team=False):
     # Validate state
     validate_state(args.get('state'))
 
-    if team:
-        success = validate_team(args)
-    else:
-        success = validate_user(args)
+    # Get access token
+    token = get_token(args.get('code'), scope)
+
+    # Validate token and get info
+    token_info = validate_token(token)
+
+    # Set up storage methods
+    store_methods = {
+        'user': store_user,
+        'team': store_team
+    }
+
+    # Store token data
+    store_methods[scope](token, token_info)
 
     # Set success url
     redirect_url = '{0}?success=1'.format(PROJECT_INFO['base_url'])

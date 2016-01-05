@@ -24,13 +24,20 @@ Module: slack_tableflip.flipper
 
 import argparse
 import slack_tableflip as stf
-from slacker import Chat, Error
+from slacker import Auth, Chat, Error
 from slack_tableflip.storage import Users
 
 
 # Set globals
 ERRORS = []
 COMMAND = None
+
+# Set not authenticated error message
+AUTH_MSG = "{0} is not authorized to post on your behalf in this team: {1}"
+AUTH_ERROR = AUTH_MSG.format(
+    stf.PROJECT_INFO['name_full'],
+    '*<{0}|Click here to authorize>*'.format(stf.PROJECT_INFO['auth_url'])
+)
 
 
 class FlipParser(argparse.ArgumentParser):
@@ -153,26 +160,42 @@ def check_user(args):
         Returns authenticated user token data
     '''
 
-    # Set not authenticated error message
-    auth_msg = "{0} is not authorized to post on your behalf in this team: {1}"
-    auth_error = auth_msg.format(
-        stf.PROJECT_INFO['name_full'],
-        '*<{0}|Click here to authorize>*'.format(stf.PROJECT_INFO['auth_url'])
-    )
-
     # Look for user in DB
     user = Users.query.get(args['user_id'])
 
     # Validate user
     if not user:
-        return False, auth_error
+        return None
 
     # Validate team
     if user.team != args['team_id']:
-        return False, auth_error
+        return None
 
     # Return token
-    return True, user.token
+    return user.token
+
+
+def is_valid_token(token):
+    ''' Checks that the user has a valid token
+    '''
+
+    # Set auth object
+    auth = Auth(token)
+
+    try:
+        # Make request
+        result = auth.test()
+
+    except Error:
+        # Check for auth errors
+        return False
+
+    # Check for further errors
+    if not result.successful:
+        return False
+
+    # Return successful
+    return True
 
 
 def do_restore_flip(flip_type, words):
@@ -268,11 +291,17 @@ def flip(args):
         COMMAND = args['command']
 
     # Check to see if user has authenticated with the app
-    (valid, token) = check_user(args)
+    token = check_user(args)
 
     # If the user is not valid, let them know
-    if not valid:
-        return token
+    if token is None:
+        print AUTH_ERROR
+        return AUTH_ERROR
+
+    # Check that this token is still valid
+    if not is_valid_token(token):
+        print AUTH_ERROR
+        return AUTH_ERROR
 
     # If there's no input, use the default flip
     if not args['text']:

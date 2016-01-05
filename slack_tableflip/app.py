@@ -17,6 +17,7 @@
 ''' Script to start Flask server for hosted table flipping
 '''
 
+import logging
 import slack_tableflip.auth as auth
 import slack_tableflip.flipper as flipper
 from flask import redirect, render_template, request
@@ -29,6 +30,7 @@ def home():
     '''
 
     if request.method == 'POST':
+        logging.warning(request.form)
         return flipper.flip(request.form)
 
     else:
@@ -65,4 +67,4 @@ def teams():
 def authorize():
     ''' Authorize the returned values from team authentication
     '''
-    return redirect(auth.validate_return(request.args, True))
+    return redirect(auth.validate_return(request.args, 'team'))
