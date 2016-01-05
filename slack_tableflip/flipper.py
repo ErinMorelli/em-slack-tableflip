@@ -295,12 +295,10 @@ def flip(args):
 
     # If the user is not valid, let them know
     if token is None:
-        print AUTH_ERROR
         return AUTH_ERROR
 
     # Check that this token is still valid
     if not is_valid_token(token):
-        print AUTH_ERROR
         return AUTH_ERROR
 
     # If there's no input, use the default flip
