@@ -48,6 +48,23 @@ class Users(DB.Model):
         return '<User {0}>'.format(self.id)
 
 
+class Teams(DB.Model):
+    ''' Table for storing authenticated user data
+    '''
+    __tablename__ = 'flip_teams'
+
+    id = DB.Column(DB.String(16), primary_key=True)
+    token = DB.Column(DB.String(60))
+    added = DB.Column(DB.DateTime)
+
+    def __init__(self, team_id):
+        self.id = team_id
+        self.added = datetime.now()
+
+    def __repr__(self):
+        return '<Team {0}>'.format(self.id)
+
+
 try:
     # Attempt to initialize database
     DB.create_all()

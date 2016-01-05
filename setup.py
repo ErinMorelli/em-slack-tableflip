@@ -40,7 +40,7 @@ def gen_data_files(*dirs):
 # Set up mediahandler package
 setup(
     name='em-slack-tableflip',
-    version='0.1b6',
+    version='0.2',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
     url='http://slack-tableflip.herokuapp.com',

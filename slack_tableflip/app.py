@@ -42,13 +42,27 @@ def home():
 
 @APP.route('/authenticate')
 def authenticate():
-    ''' Redirect user to generated Slack authentication url
+    ''' Redirect to generated Slack user authentication url
     '''
     return redirect(auth.get_redirect())
 
 
 @APP.route('/validate')
 def validate():
-    ''' Validate the returned values from authentication
+    ''' Validate the returned values from user authentication
     '''
     return redirect(auth.validate_return(request.args))
+
+
+@APP.route('/teams')
+def teams():
+    ''' Redirect the to the Slack team authentication url
+    '''
+    return redirect(auth.get_redirect('team'))
+
+
+@APP.route('/authorize')
+def authorize():
+    ''' Authorize the returned values from team authentication
+    '''
+    return redirect(auth.validate_return(request.args, True))

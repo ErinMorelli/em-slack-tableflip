@@ -40,7 +40,7 @@ def set_project_info():
     '''
 
     # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
-    base_url = 'http://slack-tableflip.herokuapp.com'
+    base_url = 'http://localhost:5000' #'http://slack-tableflip.herokuapp.com'
 
     # Get app info from the dist
     app_name = 'slack_tableflip'
@@ -50,15 +50,25 @@ def set_project_info():
         'name': app_name,
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
-        'version': '0.1b6',
-        'version_int': 0.116,
+        'version': '0.2',
+        'version_int': 0.2,
         'package_path': provider.module_path,
         'copyright': str(date.today().year),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
         'client_id': os.environ['SLACK_CLIENT_ID'],
         'base_url': base_url,
+        'oauth_url': 'https://slack.com/oauth/authorize',
         'auth_url': '{0}/authenticate'.format(base_url),
-        'valid_url': '{0}/validate'.format(base_url)
+        'user_url': '{0}/validate'.format(base_url),
+        'team_url': '{0}/authorize'.format(base_url),
+        'team_scope': [
+            'commands'
+        ],
+        'user_scope': [
+            'chat:write:bot',
+            'chat:write:user',
+            'identify'
+        ]
     }
 
 # Project info

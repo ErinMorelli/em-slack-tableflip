@@ -31,6 +31,9 @@ from slack_tableflip.storage import Users, DB
 from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+
 
 # Create serializer
 GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
@@ -40,33 +43,36 @@ GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
 #  Authentication
 # =============================================================================
 
-def get_redirect():
-    ''' Generates Slack authentication URL
+def get_redirect(scope='user'):
+    ''' Generates Slack user authentication URL
     '''
-
-    # Set OAuth base URL
-    location_base = 'https://slack.com/oauth/authorize'
 
     # Generate state token
     state_token = GENERATOR.dumps(PROJECT_INFO['client_id'])
 
+    # Setup scope
+    scope_type = '{0}_scope'.format(scope)
+
+    # Setup return URL
+    return_url = '{0}_url'.format(scope)
+
     # URL encode params
     params = urlencode({
         'client_id': PROJECT_INFO['client_id'],
-        'redirect_uri': PROJECT_INFO['valid_url'],
-        'scope': 'read,post,client',
+        'redirect_uri': PROJECT_INFO[return_url],
+        'scope': ' '.join(PROJECT_INFO[scope_type]),
         'state': state_token
     })
 
     # Set full location
-    location = "{0}?{1}".format(location_base, params)
+    location = "{0}?{1}".format(PROJECT_INFO['oauth_url'], params)
 
     # Return URL for redirect
     return location
 
 
 # =============================================================================
-#  Validation
+#  State Validation
 # =============================================================================
 
 def validate_state(state):
@@ -96,6 +102,10 @@ def validate_state(state):
     return
 
 
+# =============================================================================
+#  User Validation
+# =============================================================================
+
 def get_user_token(code):
     ''' Requests a user token from the Slack API
     '''
@@ -108,7 +118,7 @@ def get_user_token(code):
         result = oauth.access(
             client_id=PROJECT_INFO['client_id'],
             client_secret=PROJECT_INFO['client_secret'],
-            redirect_uri=PROJECT_INFO['valid_url'],
+            redirect_uri=PROJECT_INFO['user_url'],
             code=code
         )
 
@@ -122,7 +132,7 @@ def get_user_token(code):
     return result.body['access_token']
 
 
-def validate_user(token):
+def get_user_info(token):
     ''' Retrieves user information from Slack API
     '''
 
@@ -140,17 +150,9 @@ def validate_user(token):
     return result.body
 
 
-def validate_return(args):
-    ''' Wrapper function for data validation functions
-        Stores new authenticated user data
+def validate_user(args):
+    ''' User-specific validation
     '''
-
-    # Make sure we have args
-    if not args.get('state') or not args.get('code'):
-        abort(400)
-
-    # Validate state
-    validate_state(args.get('state'))
 
     # Get user token
     token = get_user_token(args.get('code'))
@@ -171,6 +173,47 @@ def validate_return(args):
     except IntegrityError:
         # User already exists
         abort(409)
+    return
+
+
+# =============================================================================
+#  Team Validation
+# =============================================================================
+
+def get_team_token():
+    return
+
+def get_team_info():
+    return
+
+def validate_team(args):
+
+    # Get user token
+    token = get_user_token(args.get('code'))
+
+    pp.pprint(token)
+    return
+
+
+def validate_return(args, team=False):
+    ''' Wrapper function for data validation functions
+        Stores new authenticated user data
+    '''
+
+    print args.get('state')
+    print args.get('code')
+
+    # Make sure we have args
+    if not args.get('state') or not args.get('code'):
+        abort(400)
+
+    # Validate state
+    validate_state(args.get('state'))
+
+    if team:
+        success = validate_team(args)
+    else:
+        success = validate_user(args)
 
     # Set success url
     redirect_url = '{0}?success=1'.format(PROJECT_INFO['base_url'])
