@@ -40,7 +40,7 @@ def set_project_info():
     '''
 
     # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
-    base_url = 'http://slack-tableflip.herokuapp.com'
+    base_url = 'https://slack-tableflip.herokuapp.com'
 
     # Get app info from the dist
     app_name = 'slack_tableflip'
