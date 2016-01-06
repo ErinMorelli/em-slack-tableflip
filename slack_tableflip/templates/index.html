@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/pygment_trac.css') }}">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -24,7 +25,8 @@
         <div class="wrapper">
             <header>
                 <h1>{{ project.name_full }} <small>{{ project.version }}</small></h1>
-                <p>Flip some tables on <a href="https://slack.com/">Slack</a>.</p>
+                <p style="margin-bottom:0">Flip some tables on <a href="https://slack.com/">Slack</a>.</p>
+                <p><img src="{{ url_for('static', filename='img/tableflip.png') }}" border="0" alt="{{ project.name_full }}" /></p>
                 <p class="view"><a href="{{ project.github_url }}">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
                 <ul>
                     <li><a href="{{ project.github_url }}/zipball/master">Download <strong>ZIP File</strong></a></li>
