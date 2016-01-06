@@ -8,6 +8,8 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 
 [Click here](https://slack-tableflip.herokuapp.com/#quick-setup) for quick setup with Slack.
 
+View available commands and options [here](#usage).
+
 ----------
 ## Manual Setup
 
