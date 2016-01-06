@@ -6,7 +6,7 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 ----------
 ## Quick Setup
 
-[Click here](https://slack-tableflip.herokuapp.com/#quick-setup) for quick setup with Slack.
+[Click here](https://slack-tableflip.herokuapp.com/teams) for quick setup with Slack.
 
 View available commands and options [here](#usage).
 
