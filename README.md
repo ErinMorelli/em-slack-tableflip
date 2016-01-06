@@ -44,131 +44,131 @@ Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://
 ----------
 ## Usage
 
-**Note:** These examples use `/flip` as the slash command, but yours may vary based on what you selected for step 2 during the manual setup process.
+**Note:** These examples use `/tableflip` as the slash command, but yours may vary based on what you selected for step 2 during a [manual](#manual-setup) setup.
 
-Use command `/flip help` to view this usage information from within Slack.
+Use command `/tableflip help` to view this usage information from within Slack.
 
 **Basic Flip:**
 
-    /flip
+    /tableflip
 
 **Word Flips:**
 
-    /flip word [word]
+    /tableflip word [word]
 
-    /flip relax [word]
+    /tableflip relax [word]
 
-**Tip:** You can enter one or multiple words, e.g. `/flip` word Hello World produces: `(╯°□°)╯︵ plɹoM ollǝH`
+**Tip:** You can enter one or multiple words, e.g. `/tableflip` word Hello World produces: `(╯°□°)╯︵ plɹoM ollǝH`
 
 **Special Flips:**
 
-    /flip [type]
+    /tableflip [type]
 
 Available flip types:
 
-    /flip
+    /tableflip
         (╯°□°)╯︵ ┻━┻
 
-    /flip adorable
+    /tableflip adorable
         (づ｡◕‿‿◕｡)づ ︵ ┻━┻
 
-    /flip battle
+    /tableflip battle
         (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)
 
-    /flip bear
+    /tableflip bear
         ʕノ•ᴥ•ʔノ ︵ ┻━┻
 
-    /flip bomb
+    /tableflip bomb
         ( ・_・)ノ⌒●~*
 
-    /flip bored
+    /tableflip bored
         (ノ゜-゜)ノ ︵ ┻━┻
 
-    /flip buffet
+    /tableflip buffet
         (╯°□°）╯︵ ┻━━━┻
 
-    /flip cry
+    /tableflip cry
         (╯'□')╯︵ ┻━┻
 
-    /flip cute
+    /tableflip cute
         ┻━┻ ︵ ლ(⌒-⌒ლ)
 
-    /flip dead
+    /tableflip dead
         (╯°□°）╯︵ /(x_x)|
 
-    /flip force
+    /tableflip force
         (._.) ~ ︵ ┻━┻
 
-    /flip freakout
+    /tableflip freakout
         (ﾉಥДಥ)ﾉ︵┻━┻･/
 
-    /flip fury
+    /tableflip fury
         ┻━┻彡 ヽ(ಠДಠ)ノ彡┻━┻﻿
 
-    /flip glare
+    /tableflip glare
         (╯ಠ_ಠ）╯︵ ┳━┳
 
-    /flip hypnotic
+    /tableflip hypnotic
         (╯°.°）╯ ┻━┻
 
-    /flip jake
+    /tableflip jake
         (┛❍ᴥ❍﻿)┛彡┻━┻
 
-    /flip laptop
+    /tableflip laptop
         (ノÒ益Ó)ノ彡▔▔▏
 
-    /flip magic
+    /tableflip magic
         (/¯◡ ‿ ◡)/¯ ~ ┻━┻
 
-    /flip monocle
+    /tableflip monocle
         (╯ಠ_ರೃ)╯︵ ┻━┻
 
-    /flip opposite
+    /tableflip opposite
         ノ┬─┬ノ ︵ ( \o°o)\
 
-    /flip owl
+    /tableflip owl
         (ʘ∇ʘ)ク 彡 ┻━┻
 
-    /flip people
+    /tableflip people
         (/ .□.)\ ︵╰(゜Д゜)╯︵ /(.□. \)
 
-    /flip person
+    /tableflip person
         (╯°□°）╯︵ /(.□. \)
 
-    /flip pudgy
+    /tableflip pudgy
         (ノ ゜Д゜)ノ ︵ ┻━┻
 
-    /flip rage
+    /tableflip rage
         (ﾉಥ益ಥ）ﾉ﻿ ┻━┻
 
-    /flip relax
+    /tableflip relax
         ┬─┬ノ( º _ ºノ)
 
-    /flip return
+    /tableflip return
         (ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)
 
-    /flip robot
+    /tableflip robot
         ┗[© ♒ ©]┛ ︵ ┻━┻
 
-    /flip shrug
+    /tableflip shrug
         ┻━┻ ︵﻿ ¯\(ツ)/¯ ︵ ┻━┻
 
-    /flip strong
+    /tableflip strong
         /(ò.ó)┛彡┻━┻
 
-    /flip teeth
+    /tableflip teeth
         (ノಠ益ಠ)ノ彡┻━┻
 
-    /flip tantrum
+    /tableflip tantrum
         ┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻
 
-    /flip two
+    /tableflip two
         ┻━┻ ︵╰(°□°)╯︵ ┻━┻
 
-    /flip whoops
+    /tableflip whoops
         ┬──┬﻿ ¯\_(ツ)
 
-    /flip yelling
+    /tableflip yelling
         (┛◉Д◉)┛彡┻━┻
 
-Use command `/flip list` to view this list from within Slack.
+Use command `/tableflip list` to view this list from within Slack.

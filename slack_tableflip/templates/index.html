@@ -90,43 +90,43 @@
 
                 <h2 id="usage">Usage</h2>
 
-                <p><strong>Note:</strong> These examples use <code>/flip</code> as the slash command, but yours may vary based on what you selected for step 2 during the <a href="setup">setup</a> process.</p>
+                <p><strong>Note:</strong> These examples use <code>/tableflip</code> but yours may vary based on what you selected for step 2 during a <a href="manual-setup">manual</a> setup.</p>
 
-                <p>Use command <code>/flip help</code> to view this usage information from within Slack.</p>
+                <p>Use command <code>/tableflip help</code> to view this usage information from within Slack.</p>
 
                 <p><strong>Basic Flip:</strong></p>
 
-                <pre><code>/flip</code></pre>
+                <pre><code>/tableflip</code></pre>
 
                 <p><strong>Word Flips:</strong></p>
 
-                <pre><code>/flip word [word]</code></pre>
-                <pre><code>/flip relax [word]</code></pre>
+                <pre><code>/tableflip word [word]</code></pre>
+                <pre><code>/tableflip relax [word]</code></pre>
 
-                <p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/flip word Hello World</code> produces: <code>(╯°□°)╯︵ plɹoM ollǝH</code></p>
+                <p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/tableflip word Hello World</code> produces: <code>(╯°□°)╯︵ plɹoM ollǝH</code></p>
 
                 <p><strong>Special Flips:</strong></p>
 
-                <pre><code>/flip [type]</code></pre>
+                <pre><code>/tableflip [type]</code></pre>
 
                 <p>Available flip types:</p>
 
                 <table>
                     <tr>
-                        <td><code>/flip</code></td>
+                        <td><code>/tableflip</code></td>
                         <td><code>{{ allowed_types['classic'].decode('utf-8') }}</code></td>
                     </tr>
                     {% for (allowed_type, description) in allowed_types|dictsort(true) -%}
                         {% if allowed_type != 'classic' -%}
                             <tr>
-                                <td><code>/flip {{ allowed_type }}</code></td>
+                                <td><code>/tableflip {{ allowed_type }}</code></td>
                                 <td><code>{{ description.decode('utf-8') }}</code></td>
                             </tr>
                         {%- endif %}
                     {%- endfor %}
                 </table>
 
-                <p>Use command <code>/flip list</code> to view this list from within Slack.
+                <p>Use command <code>/tableflip list</code> to view this list from within Slack.
 
             </section>
             <footer>
