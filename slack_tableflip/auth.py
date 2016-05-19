@@ -1,34 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
-# EM Slack Tableflip
-# Copyright (c) 2015-2016 Erin Morelli
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-'''
-Module: slack_tableflip.auth
+"""
+EM Slack Tableflip module: slack_tableflip.auth.
 
     - Generates Slack authentication URL
     - Validates data returned by Slack authentication
     - Stores authenticated user data
-'''
 
-from flask import abort
+Copyright (c) 2015-2016 Erin Morelli
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+"""
+
 from urllib import urlencode
 from datetime import timedelta
+from flask import abort
 from slacker import OAuth, Auth, Error
-from slack_tableflip import PROJECT_INFO
+from slack_tableflip import PROJECT_INFO, report_event
 from slack_tableflip.storage import Users, Teams, DB
-from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
 
@@ -37,9 +35,7 @@ GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
 
 
 def get_redirect(scope='user'):
-    ''' Generates Slack authentication URL
-    '''
-
+    """Generate Slack authentication URL."""
     # Generate state token
     state_token = GENERATOR.dumps(PROJECT_INFO['client_id'])
 
@@ -65,9 +61,7 @@ def get_redirect(scope='user'):
 
 
 def validate_state(state):
-    ''' Validates state token returned by authentication
-    '''
-
+    """Validate state token returned by authentication."""
     try:
         # Attempt to decode state
         state_token = GENERATOR.loads(
@@ -77,14 +71,24 @@ def validate_state(state):
 
     except SignatureExpired:
         # Token has expired
+        report_event('token_expired', {
+            'state': state
+        })
         abort(400)
 
     except BadSignature:
         # Token is not authorized
+        report_event('token_not_authorized', {
+            'state': state
+        })
         abort(401)
 
     if state_token != PROJECT_INFO['client_id']:
         # Token is not authorized
+        report_event('token_not_valid', {
+            'state': state,
+            'state_token': state_token
+        })
         abort(401)
 
     # Return success
@@ -92,9 +96,7 @@ def validate_state(state):
 
 
 def get_token(code, scope='user'):
-    ''' Requests a token from the Slack API
-    '''
-
+    """Request a token from the Slack API."""
     # Set OAuth access object
     oauth = OAuth()
 
@@ -110,10 +112,20 @@ def get_token(code, scope='user'):
             code=code
         )
 
-    except Error:
+    except Error as err:
+        report_event('oauth_error', {
+            'code': code,
+            'return_url': return_url,
+            'error': str(err)
+        })
         abort(400)
 
     if not result.successful:
+        report_event('oauth_unsuccessful', {
+            'code': code,
+            'return_url': return_url,
+            'result': result.__dict__
+        })
         abort(400)
 
     # Return token
@@ -121,9 +133,7 @@ def get_token(code, scope='user'):
 
 
 def validate_token(token):
-    ''' Validates token and retrieves info from Slack API
-    '''
-
+    """Validate token and retrieves info from Slack API."""
     # Set auth object
     auth = Auth(token)
 
@@ -131,11 +141,18 @@ def validate_token(token):
         # Make request
         result = auth.test()
 
-    except Error:
+    except Error as err:
+        report_event(str(err), {
+            'token': token
+        })
         abort(400)
 
     # Check for errors
     if not result.successful:
+        report_event('token_invalid', {
+            'token': token,
+            'result': result.__dict__
+        })
         abort(400)
 
     # Return user info
@@ -143,13 +160,15 @@ def validate_token(token):
 
 
 def store_user(token, info):
-    ''' Stores a validated user in the database
-    '''
-
+    """Store a validated user in the database."""
     # Check if user exists
-    user = DB.session.query(Users).filter(
-        Users.id==info['user_id']).filter(
-        Users.team==info['team_id']).first()
+    user = DB.session.query(
+        Users
+    ).filter(
+        Users.id == info['user_id']
+    ).filter(
+        Users.team == info['team_id']
+    ).first()
 
     if user is None:
         # Create new user
@@ -158,10 +177,18 @@ def store_user(token, info):
         new_user.token = token
 
         # Store new user
+        report_event('user_added', {
+            'token': token,
+            'info': info
+        })
         DB.session.add(new_user)
 
     else:
         # Update user token
+        report_event('user_updated', {
+            'token': token,
+            'info': info
+        })
         user.token = token
 
     # Update DB
@@ -171,9 +198,7 @@ def store_user(token, info):
 
 
 def store_team(token, info):
-    ''' Stores a validated team in the database
-    '''
-
+    """Store a validated team in the database."""
     # Check if team exists
     team = Teams.query.get(info['team_id'])
 
@@ -183,10 +208,18 @@ def store_team(token, info):
         new_team.token = token
 
         # Store new team
+        report_event('team_added', {
+            'token': token,
+            'info': info
+        })
         DB.session.add(new_team)
 
     else:
         # Update team token
+        report_event('team_updated', {
+            'token': token,
+            'info': info
+        })
         team.token = token
 
     # Update DB
@@ -196,19 +229,17 @@ def store_team(token, info):
 
 
 def validate_return(args, scope='user'):
-    ''' Wrapper function for data validation functions
-        Stores new authenticated user data
-    '''
-
+    """Wrapper function for data validation functions."""
     # Make sure we have args
-    if not args.get('state') or not args.get('code'):
+    if not args['state'] or not args['code']:
+        report_event('missing_args', args)
         abort(400)
 
     # Validate state
-    validate_state(args.get('state'))
+    validate_state(args['state'])
 
     # Get access token
-    token = get_token(args.get('code'), scope)
+    token = get_token(args['code'], scope)
 
     # Validate token and get info
     token_info = validate_token(token)

@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
-# EM Slack Tableflip
-# Copyright (c) 2015-2016 Erin Morelli
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-'''
-Module: slack_tableflip
+# pylint: disable=anomalous-backslash-in-string
+"""
+EM Slack Tableflip Module: slack_tableflip.
 
     - Sets up Flask application and module constants
-'''
+
+Copyright (c) 2015-2016 Erin Morelli
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+"""
 
 import os
-from flask import Flask
+from threading import Thread
 from datetime import date
+import keen
+from flask import Flask
 from pkg_resources import get_provider
 
 
@@ -36,9 +38,7 @@ __module__ = "slack_tableflip.{0}".format(__file__)
 
 # Get module info
 def set_project_info():
-    ''' Set project information from setup tools installation
-    '''
-
+    """Set project information from setup tools installation."""
     # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
     base_url = 'https://slack-tableflip.herokuapp.com'
 
@@ -51,8 +51,8 @@ def set_project_info():
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
         'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
-        'version': '0.2',
-        'version_int': 0.2,
+        'version': '1.4',
+        'version_int': 1.4,
         'package_path': provider.module_path,
         'copyright': '2015-{0}'.format(str(date.today().year)),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
@@ -245,6 +245,22 @@ FLIPPED_CHARS = {
     "&": "⅋",
     "_": "‾"
 }
+
+
+def report_event(name, event):
+    """Asyncronously report an event."""
+    # Set up thread
+    event_report = Thread(
+        target=keen.add_event,
+        args=(name, event)
+    )
+
+    # Set up as asyncronous daemon
+    event_report.daemon = True
+
+    # Start event report
+    event_report.start()
+
 
 # =============================================================================
 # Flask App Configuration
