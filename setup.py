@@ -1,29 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
-# EM Slack Tableflip
-# Copyright (c) 2015-2016 Erin Morelli
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-''' EM Slack Tableflip module setup
-'''
+"""
+EM Slack Tableflip module setup.
+
+Copyright (c) 2015-2016 Erin Morelli
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+"""
 
 import os
 from setuptools import setup
 
 
 def gen_data_files(*dirs):
-    ''' Generate list of files for package data installation
-    '''
+    """Generate list of files for package data installation."""
     results = []
 
     for src_dir in dirs:
@@ -37,10 +36,10 @@ def gen_data_files(*dirs):
     return results
 
 
-# Set up mediahandler package
+# Set up slack_tableflip package
 setup(
     name='em-slack-tableflip',
-    version='0.2',
+    version='0.3',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
     url='http://slack-tableflip.herokuapp.com',

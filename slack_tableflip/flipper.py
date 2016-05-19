@@ -1,26 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
-# EM Slack Tableflip
-# Copyright (c) 2015-2016 Erin Morelli
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-'''
-Module: slack_tableflip.flipper
+# pylint: disable=global-variable-not-assigned,global-statement
+"""
+EM Slack Tableflip module: slack_tableflip.flipper.
 
     - Parses POST data from Slack
     - Parses user flip request
     - Retrieves and returns flip data
-'''
+
+Copyright (c) 2015-2016 Erin Morelli
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+"""
 
 import argparse
 import slack_tableflip as stf
@@ -41,18 +41,15 @@ AUTH_ERROR = AUTH_MSG.format(
 
 
 class FlipParser(argparse.ArgumentParser):
-    ''' Custom ArgumentParser object for special error and help messages.
-    '''
+    """Custom ArgumentParser object for special error and help messages."""
 
     def error(self, message):
-        ''' Stores all error messages in global errors list
-        '''
+        """Store all error messages in global errors list."""
         global ERRORS
         ERRORS.append(message)
 
-    def print_help(self, req_type):
-        ''' Generates help and list messages
-        '''
+    def print_help(self, req_type=None):
+        """Generate help and list messages."""
         global ERRORS
         global COMMAND
 
@@ -95,13 +92,11 @@ class FlipParser(argparse.ArgumentParser):
             ))
 
 
-class TypeAction(argparse.Action):
-    ''' Custom Action object for validating and parsing flip arguments
-    '''
+class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
+    """Custom Action object for validating and parsing flip arguments."""
 
     def __call__(self, parser, namespace, values, option_string=None):
-        ''' Validates flip arguments and stores them to namespace
-        '''
+        """Validate flip arguments and stores them to namespace."""
         flip_type = values[0].lower()
         flip_word = None
 
@@ -143,9 +138,7 @@ class TypeAction(argparse.Action):
 
 
 def get_parser():
-    ''' Sets up and returns custom ArgumentParser object
-    '''
-
+    """Set up and returns custom ArgumentParser object."""
     # Create flip parser
     parser = FlipParser()
 
@@ -156,10 +149,7 @@ def get_parser():
 
 
 def check_user(args):
-    ''' Checks that the user is authenticated with the app
-        Returns authenticated user token data
-    '''
-
+    """Return authenticated user token data."""
     # Look for user in DB
     user = Users.query.get(args['user_id'])
 
@@ -176,9 +166,7 @@ def check_user(args):
 
 
 def is_valid_token(token):
-    ''' Checks that the user has a valid token
-    '''
-
+    """Check that the user has a valid token."""
     # Set auth object
     auth = Auth(token)
 
@@ -199,18 +187,14 @@ def is_valid_token(token):
 
 
 def do_restore_flip(flip_type, words):
-    ''' Restore a flipped word
-    '''
-
+    """Restore a flipped word."""
     flip_base = stf.RESTORE_TYPES[flip_type]
 
     return flip_base.format(words)
 
 
 def do_word_flip(flip_type, words):
-    ''' Flips some words
-    '''
-
+    """Flip some words."""
     # Flip characters using mapping
     char_list = [
         stf.FLIPPED_CHARS.get(char.encode('utf-8'), char.encode('utf-8'))
@@ -226,9 +210,7 @@ def do_word_flip(flip_type, words):
 
 
 def do_flip(flip_type, flip_word=None):
-    ''' Returns the requested flip
-    '''
-
+    """Return the requested flip."""
     # Fall back to a basic flip
     if flip_type == '':
         flip_type = 'classic'
@@ -249,9 +231,7 @@ def do_flip(flip_type, flip_word=None):
 
 
 def send_flip(token, table, args):
-    ''' Posts the flip as the authenticated user in Slack
-    '''
-
+    """Post the flip as the authenticated user in Slack."""
     # Set up chat object
     chat = Chat(token)
 
@@ -266,17 +246,17 @@ def send_flip(token, table, args):
 
     except Error as err:
         # Report if we got any errors
-        return err
+        return '{0} encountered an error: {1}'.format(
+            stf.PROJECT_INFO['name_full'],
+            str(err)
+        )
 
     # Return successful
     return
 
 
 def flip(args):
-    ''' Wrapper function for flip functions
-        Returned error messages will post as private slackbot messages
-    '''
-
+    """Wrapper function for flip functions."""
     # Reset global error traker
     global ERRORS
     ERRORS = []
@@ -293,12 +273,8 @@ def flip(args):
     # Check to see if user has authenticated with the app
     token = check_user(args)
 
-    # If the user is not valid, let them know
-    if token is None:
-        return AUTH_ERROR
-
-    # Check that this token is still valid
-    if not is_valid_token(token):
+    # If the user or token is not valid, let them know
+    if token is None or not is_valid_token(token):
         return AUTH_ERROR
 
     # If there's no input, use the default flip

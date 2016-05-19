@@ -1,34 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-#
-# EM Slack Tableflip
-# Copyright (c) 2015-2016 Erin Morelli
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-'''
-Module: slack_tableflip.auth
+"""
+EM Slack Tableflip module: slack_tableflip.auth.
 
     - Generates Slack authentication URL
     - Validates data returned by Slack authentication
     - Stores authenticated user data
-'''
 
-from flask import abort
+Copyright (c) 2015-2016 Erin Morelli
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+"""
+
 from urllib import urlencode
 from datetime import timedelta
+from flask import abort
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO
 from slack_tableflip.storage import Users, Teams, DB
-from sqlalchemy.exc import IntegrityError as IntegrityError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
 
@@ -37,9 +35,7 @@ GENERATOR = URLSafeTimedSerializer(PROJECT_INFO['client_secret'])
 
 
 def get_redirect(scope='user'):
-    ''' Generates Slack authentication URL
-    '''
-
+    """Generate Slack authentication URL."""
     # Generate state token
     state_token = GENERATOR.dumps(PROJECT_INFO['client_id'])
 
@@ -65,9 +61,7 @@ def get_redirect(scope='user'):
 
 
 def validate_state(state):
-    ''' Validates state token returned by authentication
-    '''
-
+    """Validate state token returned by authentication."""
     try:
         # Attempt to decode state
         state_token = GENERATOR.loads(
@@ -92,9 +86,7 @@ def validate_state(state):
 
 
 def get_token(code, scope='user'):
-    ''' Requests a token from the Slack API
-    '''
-
+    """Request a token from the Slack API."""
     # Set OAuth access object
     oauth = OAuth()
 
@@ -121,9 +113,7 @@ def get_token(code, scope='user'):
 
 
 def validate_token(token):
-    ''' Validates token and retrieves info from Slack API
-    '''
-
+    """Validate token and retrieves info from Slack API."""
     # Set auth object
     auth = Auth(token)
 
@@ -143,13 +133,15 @@ def validate_token(token):
 
 
 def store_user(token, info):
-    ''' Stores a validated user in the database
-    '''
-
+    """Store a validated user in the database."""
     # Check if user exists
-    user = DB.session.query(Users).filter(
-        Users.id==info['user_id']).filter(
-        Users.team==info['team_id']).first()
+    user = DB.session.query(
+        Users
+    ).filter(
+        Users.id == info['user_id']
+    ).filter(
+        Users.team == info['team_id']
+    ).first()
 
     if user is None:
         # Create new user
@@ -171,9 +163,7 @@ def store_user(token, info):
 
 
 def store_team(token, info):
-    ''' Stores a validated team in the database
-    '''
-
+    """Store a validated team in the database."""
     # Check if team exists
     team = Teams.query.get(info['team_id'])
 
@@ -196,10 +186,7 @@ def store_team(token, info):
 
 
 def validate_return(args, scope='user'):
-    ''' Wrapper function for data validation functions
-        Stores new authenticated user data
-    '''
-
+    """Wrapper function for data validation functions."""
     # Make sure we have args
     if not args.get('state') or not args.get('code'):
         abort(400)
