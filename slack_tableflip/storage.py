@@ -56,7 +56,7 @@ class Teams(DB.Model):
     __tablename__ = 'flip_teams'
 
     id = DB.Column(DB.String(16), primary_key=True)
-    token = DB.Column(DB.String(60))
+    token = DB.Column(DB.String(255))
     added = DB.Column(DB.DateTime)
 
     def __init__(self, team_id):
