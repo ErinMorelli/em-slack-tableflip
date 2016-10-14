@@ -37,7 +37,7 @@ class Users(DB.Model):
 
     id = DB.Column(DB.String(16), primary_key=True)
     team = DB.Column(DB.String(16))
-    token = DB.Column(DB.String(60))
+    token = DB.Column(DB.String(255))
     added = DB.Column(DB.DateTime)
 
     def __init__(self, user_id):
