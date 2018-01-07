@@ -118,9 +118,7 @@ class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
                 'flip': flip_type
             })
             parser.error(
-                'Flip type "{0}" is not known'.format(
-                    flip_type.encode('utf-8')
-                )
+                'Flip type "{type}" is not known'.format(type=flip_type)
             )
 
         if flip_type in stf.WORD_TYPES or flip_type in stf.RESTORE_TYPES:
@@ -136,8 +134,8 @@ class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
                         'flip': flip_type
                     })
                     parser.error(
-                        'Flip type "{0}" requires words to flip'.format(
-                            flip_type.encode('utf-8')
+                        'Flip type "{type}" requires words to flip'.format(
+                            type=flip_type
                         )
                     )
 
@@ -215,7 +213,7 @@ def do_word_flip(flip_type, words):
     """Flip some words."""
     # Flip characters using mapping
     char_list = [
-        stf.FLIPPED_CHARS.get(char.encode('utf-8'), char.encode('utf-8'))
+        stf.FLIPPED_CHARS.get(char, char)
         for char in words
     ]
     char_list.reverse()
@@ -270,9 +268,9 @@ def send_flip(token, table, args):
         })
 
         # Report if we got any errors
-        return '{0} encountered an error: {1}'.format(
-            stf.PROJECT_INFO['name_full'],
-            str(err)
+        return '{app} encountered an error: {error}'.format(
+            app=stf.PROJECT_INFO['name_full'],
+            error=str(err)
         )
 
     # Return without errors
