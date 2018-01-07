@@ -2,11 +2,7 @@
 # -*- coding: UTF-8 -*-
 # pylint: disable=anomalous-backslash-in-string
 """
-EM Slack Tableflip Module: slack_tableflip.
-
-    - Sets up Flask application and module constants
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -21,11 +17,11 @@ included in all copies or substantial portions of the Software.
 """
 
 import os
-from threading import Thread
 from datetime import date
+from threading import Thread
+from pkg_resources import get_provider
 import keen
 from flask import Flask
-from pkg_resources import get_provider
 
 
 # =============================================================================
@@ -51,8 +47,8 @@ def set_project_info():
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
         'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
-        'version': '1.5',
-        'version_int': 1.5,
+        'version': '1.6',
+        'version_int': 1.6,
         'package_path': provider.module_path,
         'copyright': '2015-{0}'.format(str(date.today().year)),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
@@ -71,6 +67,7 @@ def set_project_info():
             'identify'
         ]
     }
+
 
 # Project info
 PROJECT_INFO = set_project_info()
@@ -158,6 +155,9 @@ WORD_TYPES = {
     'hypnotic': "(╯°.°）╯ {0}",
     'bored': "(ノ゜-゜)ノ ︵ {0}"
 }
+
+# Get list of all types with words
+ALL_WORD_TYPES = {**WORD_TYPES, **RESTORE_TYPES}
 
 # Flipped character mapping
 FLIPPED_CHARS = {
@@ -248,14 +248,14 @@ FLIPPED_CHARS = {
 
 
 def report_event(name, event):
-    """Asyncronously report an event."""
+    """Asynchronously report an event."""
     # Set up thread
     event_report = Thread(
         target=keen.add_event,
         args=(name, event)
     )
 
-    # Set up as asyncronous daemon
+    # Set up as asynchronous daemon
     event_report.daemon = True
 
     # Start event report
@@ -266,7 +266,7 @@ def report_event(name, event):
 # Flask App Configuration
 # =============================================================================
 
-# Initalize flask app
+# Initialize flask app
 APP = Flask(
     'em-slack-tableflip',
     template_folder=TEMPLATE_DIR,
@@ -276,6 +276,7 @@ APP = Flask(
 # Set up flask config
 # SET THESE ENV VALUES FOR YOUR OWN INSTALLATION
 APP.config.update({
+    'SECRET_KEY': os.environ['SECURE_KEY'],
     'SQLALCHEMY_DATABASE_URI': os.environ['DATABASE_URL'],
-    'SECRET_KEY': os.environ['SECURE_KEY']
+    'SQLALCHEMY_TRACK_MODIFICATIONS': True
 })

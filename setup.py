@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-EM Slack Tableflip module setup.
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -39,7 +37,7 @@ def gen_data_files(*dirs):
 # Set up slack_tableflip package
 setup(
     name='em-slack-tableflip',
-    version='1.5',
+    version='1.6',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
     url='http://slack-tableflip.herokuapp.com',

@@ -23,7 +23,8 @@ included in all copies or substantial portions of the Software.
 
 from datetime import datetime
 from slack_tableflip import APP
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
 
 
 # Create database
@@ -38,16 +39,20 @@ class Users(DB.Model):
     id = DB.Column(DB.String(16), primary_key=True)
     team = DB.Column(DB.String(16))
     token = DB.Column(DB.String(255))
-    added = DB.Column(DB.DateTime)
+    added = DB.Column(DB.DateTime, default=datetime.now)
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, team_id, token):
         """Initialize new User in db."""
         self.id = user_id
-        self.added = datetime.now()
+        self.team = team_id
+        self.token = token
 
     def __repr__(self):
         """Friendly representation of User for debugging."""
-        return '<User {0}>'.format(self.id)
+        return '<User id={user} team={team}>'.format(
+            user=self.id,
+            team=self.team
+        )
 
 
 class Teams(DB.Model):
@@ -57,22 +62,22 @@ class Teams(DB.Model):
 
     id = DB.Column(DB.String(16), primary_key=True)
     token = DB.Column(DB.String(255))
-    added = DB.Column(DB.DateTime)
+    added = DB.Column(DB.DateTime, default=datetime.now)
 
-    def __init__(self, team_id):
+    def __init__(self, team_id, token):
         """Initialize new Team in db."""
         self.id = team_id
-        self.added = datetime.now()
+        self.token = token
 
     def __repr__(self):
         """Friendly representation of Team for debugging."""
-        return '<Team {0}>'.format(self.id)
+        return '<Team id={team}>'.format(team=self.id)
 
 
 try:
     # Attempt to initialize database
     DB.create_all()
 
-except:  # pylint: disable=bare-except
+except SQLAlchemyError:
     # Other wise, refresh the session
     DB.session.rollback()

@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-Script to start Flask server for hosted table flipping.
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -20,7 +18,7 @@ included in all copies or substantial portions of the Software.
 from flask import redirect, render_template, request
 import slack_tableflip.auth as auth
 import slack_tableflip.flipper as flipper
-from slack_tableflip import (APP, PROJECT_INFO, ALLOWED_TYPES,
+from slack_tableflip import (APP, PROJECT_INFO, ALLOWED_TYPES, ALL_WORD_TYPES,
                              ALLOWED_COMMANDS, report_event)
 
 
@@ -31,13 +29,13 @@ def home():
         report_event('post_request', request.form.to_dict())
         return flipper.flip(request.form.to_dict())
 
-    else:
-        return render_template(
-            'index.html',
-            project=PROJECT_INFO,
-            allowed_types=ALLOWED_TYPES,
-            allowed_commands=ALLOWED_COMMANDS
-        )
+    return render_template(
+        'index.html',
+        project=PROJECT_INFO,
+        allowed_types=ALLOWED_TYPES,
+        allowed_word_types=ALL_WORD_TYPES,
+        allowed_commands=ALLOWED_COMMANDS
+    )
 
 
 @APP.route('/authenticate')

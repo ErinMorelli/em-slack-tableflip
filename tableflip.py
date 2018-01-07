@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-Run the EM Slack Tableflip application.
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

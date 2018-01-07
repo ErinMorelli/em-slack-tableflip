@@ -102,29 +102,31 @@
 
                 <pre><code>/tableflip</code></pre>
 
-                <p><strong>Word Flips:</strong></p>
+                <p><strong>Basic Word Flips:</strong></p>
 
                 <pre><code>/tableflip word [word]</code></pre>
-                <pre><code>/tableflip relax [word]</code></pre>
 
                 <p><strong>Tip:</strong> You can enter one or multiple words, e.g. <code>/tableflip word Hello World</code> produces: <code>(╯°□°)╯︵ plɹoM ollǝH</code></p>
 
                 <p><strong>Special Flips:</strong></p>
 
-                <pre><code>/tableflip [type]</code></pre>
+                <pre><code>/tableflip [type] [word]</code></pre>
+
+                <p><strong>Note:</strong> The <code>word</code> input is optional and will display the flip with the provided word. Not all flip types can do word flips. Without a word, the flip will display the standard table.</p>
 
                 <p>Available flip types:</p>
 
                 <table>
                     <tr>
                         <td><code>/tableflip</code></td>
-                        <td><code>{{ allowed_types['classic'].decode('utf-8') }}</code></td>
+                        <td><code>{{ allowed_types['classic'] }}</code></td>
                     </tr>
                     {% for (allowed_type, description) in allowed_types|dictsort(true) -%}
                         {% if allowed_type != 'classic' -%}
+                            {% set is_word_type = allowed_type in allowed_word_types.keys() %}
                             <tr>
-                                <td><code>/tableflip {{ allowed_type }}</code></td>
-                                <td><code>{{ description.decode('utf-8') }}</code></td>
+                                <td><code>/tableflip {{ allowed_type }} {% if is_word_type %}[word]{% endif %}</code></td>
+                                <td><code>{{ description }}</code></td>
                             </tr>
                         {%- endif %}
                     {%- endfor %}

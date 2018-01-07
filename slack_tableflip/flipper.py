@@ -2,13 +2,7 @@
 # -*- coding: UTF-8 -*-
 # pylint: disable=global-variable-not-assigned,global-statement
 """
-EM Slack Tableflip module: slack_tableflip.flipper.
-
-    - Parses POST data from Slack
-    - Parses user flip request
-    - Retrieves and returns flip data
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -48,7 +42,7 @@ class FlipParser(argparse.ArgumentParser):
         global ERRORS
         ERRORS.append(message)
 
-    def print_help(self, req_type=None):
+    def print_help(self, req_type=None):  # pylint: disable=arguments-differ
         """Generate help and list messages."""
         global ERRORS
         global COMMAND
@@ -77,7 +71,18 @@ class FlipParser(argparse.ArgumentParser):
 
             for allowed_type, desc in sorted(stf.ALLOWED_TYPES.items()):
                 if allowed_type != 'classic':
-                    flip_msg = " {0}`\n\n\t{1}\n\n".format(allowed_type, desc)
+                    if allowed_type in stf.ALL_WORD_TYPES.keys():
+                        flip_msg = " {type} [word]`\n\n\t{desc}\n\n".format(
+                            type=allowed_type,
+                            desc=desc
+                        )
+                    else:
+                        flip_msg = " {type}`\n\n\t{desc}\n\n".format(
+                            type=allowed_type,
+                            desc=desc
+                        )
+
+                    # Set full message for type
                     list_msg += "`{command}" + flip_msg
 
             ERRORS.append(list_msg.format(
@@ -270,13 +275,13 @@ def send_flip(token, table, args):
             str(err)
         )
 
-    # Return successful
-    return
+    # Return without errors
+    return None
 
 
 def flip(args):
-    """Wrapper function for flip functions."""
-    # Reset global error traker
+    """Run flip functions."""
+    # Reset global error tracker
     global ERRORS
     ERRORS = []
 
@@ -285,10 +290,9 @@ def flip(args):
         stf.report_event('command_not_allowed', args)
         return '"{0}" is not an allowed command'.format(args['command'])
 
-    else:
-        # Set global command value to access later
-        global COMMAND
-        COMMAND = args['command']
+    # Set global command value to access later
+    global COMMAND
+    COMMAND = args['command']
 
     # Check to see if user has authenticated with the app
     token = check_user(args)
@@ -317,7 +321,7 @@ def flip(args):
         result = parser.parse_args(text_args)
 
         # Report any errors from parser
-        if len(ERRORS) > 0:
+        if ERRORS:
             stf.report_event('parser_errors', {
                 'errors': ERRORS
             })

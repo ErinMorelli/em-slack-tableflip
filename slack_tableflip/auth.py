@@ -1,13 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-EM Slack Tableflip module: slack_tableflip.auth.
-
-    - Generates Slack authentication URL
-    - Validates data returned by Slack authentication
-    - Stores authenticated user data
-
-Copyright (c) 2015-2016 Erin Morelli
+Copyright (c) 2015-2018 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -21,8 +15,8 @@ The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 """
 
-from urllib import urlencode
 from datetime import timedelta
+from urllib.parse import urlencode
 from flask import abort
 from slacker import OAuth, Auth, Error
 from slack_tableflip import PROJECT_INFO, report_event
@@ -162,19 +156,18 @@ def validate_token(token):
 def store_user(token, info):
     """Store a validated user in the database."""
     # Check if user exists
-    user = DB.session.query(
-        Users
-    ).filter(
-        Users.id == info['user_id']
-    ).filter(
-        Users.team == info['team_id']
+    user = Users.query.filter_by(
+        id=info['user_id'],
+        team=info['team_id']
     ).first()
 
     if user is None:
         # Create new user
-        new_user = Users(info['user_id'])
-        new_user.team = info['team_id']
-        new_user.token = token
+        new_user = Users(
+            user_id=info['user_id'],
+            team_id=info['team_id'],
+            token=token
+        )
 
         # Store new user
         report_event('user_added', {
@@ -194,8 +187,6 @@ def store_user(token, info):
     # Update DB
     DB.session.commit()
 
-    return
-
 
 def store_team(token, info):
     """Store a validated team in the database."""
@@ -204,8 +195,10 @@ def store_team(token, info):
 
     if team is None:
         # Create new team
-        new_team = Teams(info['team_id'])
-        new_team.token = token
+        new_team = Teams(
+            team_id=info['team_id'],
+            token=token
+        )
 
         # Store new team
         report_event('team_added', {
@@ -225,11 +218,9 @@ def store_team(token, info):
     # Update DB
     DB.session.commit()
 
-    return
-
 
 def validate_return(args, scope='user'):
-    """Wrapper function for data validation functions."""
+    """Run data validation functions."""
     # Make sure we have args
     if not args['state'] or not args['code']:
         report_event('missing_args', args)

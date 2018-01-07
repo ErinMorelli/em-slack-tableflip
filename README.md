@@ -58,47 +58,47 @@ Use command `/tableflip help` to view this usage information from within Slack.
 
     /tableflip word [word]
 
-    /tableflip relax [word]
-
 **Tip:** You can enter one or multiple words, e.g. `/tableflip` word Hello World produces: `(╯°□°)╯︵ plɹoM ollǝH`
 
 **Special Flips:**
 
-    /tableflip [type]
+    /tableflip [type] [word]
+
+**Note**:** The `word` input is optional and will display the flip with the provided word. Not all flip types can do word flips. Without a word, the flip will display the standard table.
 
 Available flip types:
 
     /tableflip
         (╯°□°)╯︵ ┻━┻
 
-    /tableflip adorable
+    /tableflip adorable [word]
         (づ｡◕‿‿◕｡)づ ︵ ┻━┻
 
     /tableflip battle
         (╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)
 
-    /tableflip bear
+    /tableflip bear [word]
         ʕノ•ᴥ•ʔノ ︵ ┻━┻
 
     /tableflip bomb
         ( ・_・)ノ⌒●~*
 
-    /tableflip bored
+    /tableflip bored [word]
         (ノ゜-゜)ノ ︵ ┻━┻
 
     /tableflip buffet
         (╯°□°）╯︵ ┻━━━┻
 
-    /tableflip cry
+    /tableflip cry [word]
         (╯'□')╯︵ ┻━┻
 
-    /tableflip cute
+    /tableflip cute [word]
         ┻━┻ ︵ ლ(⌒-⌒ლ)
 
     /tableflip dead
         (╯°□°）╯︵ /(x_x)|
 
-    /tableflip force
+    /tableflip force [word]
         (._.) ~ ︵ ┻━┻
 
     /tableflip freakout
@@ -107,28 +107,28 @@ Available flip types:
     /tableflip fury
         ┻━┻彡 ヽ(ಠДಠ)ノ彡┻━┻﻿
 
-    /tableflip glare
+    /tableflip glare [word]
         (╯ಠ_ಠ）╯︵ ┳━┳
 
-    /tableflip hypnotic
+    /tableflip hypnotic [word]
         (╯°.°）╯ ┻━┻
 
-    /tableflip jake
+    /tableflip jake [word]
         (┛❍ᴥ❍﻿)┛彡┻━┻
 
     /tableflip laptop
         (ノÒ益Ó)ノ彡▔▔▏
 
-    /tableflip magic
+    /tableflip magic [word]
         (/¯◡ ‿ ◡)/¯ ~ ┻━┻
 
-    /tableflip monocle
+    /tableflip monocle [word]
         (╯ಠ_ರೃ)╯︵ ┻━┻
 
     /tableflip opposite
         ノ┬─┬ノ ︵ ( \o°o)\
 
-    /tableflip owl
+    /tableflip owl [word]
         (ʘ∇ʘ)ク 彡 ┻━┻
 
     /tableflip people
@@ -137,40 +137,40 @@ Available flip types:
     /tableflip person
         (╯°□°）╯︵ /(.□. \)
 
-    /tableflip pudgy
+    /tableflip pudgy [word]
         (ノ ゜Д゜)ノ ︵ ┻━┻
 
-    /tableflip rage
+    /tableflip rage [word]
         (ﾉಥ益ಥ）ﾉ﻿ ┻━┻
 
-    /tableflip relax
+    /tableflip relax [word]
         ┬─┬ノ( º _ ºノ)
 
     /tableflip return
         (ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)
 
-    /tableflip robot
+    /tableflip robot [word]
         ┗[© ♒ ©]┛ ︵ ┻━┻
 
     /tableflip shrug
         ┻━┻ ︵﻿ ¯\(ツ)/¯ ︵ ┻━┻
 
-    /tableflip strong
+    /tableflip strong [word]
         /(ò.ó)┛彡┻━┻
-
-    /tableflip teeth
-        (ノಠ益ಠ)ノ彡┻━┻
 
     /tableflip tantrum
         ┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻
 
+    /tableflip teeth [word]
+        (ノಠ益ಠ)ノ彡┻━┻
+
     /tableflip two
         ┻━┻ ︵╰(°□°)╯︵ ┻━┻
 
-    /tableflip whoops
+    /tableflip whoops [word]
         ┬──┬﻿ ¯\_(ツ)
 
-    /tableflip yelling
+    /tableflip yelling [word]
         (┛◉Д◉)┛彡┻━┻
 
 Use command `/tableflip list` to view this list from within Slack.
