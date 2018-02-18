@@ -47,8 +47,8 @@ def set_project_info():
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
         'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
-        'version': '1.7',
-        'version_int': 1.7,
+        'version': '1.8',
+        'version_int': 1.8,
         'package_path': provider.module_path,
         'copyright': '2015-{0}'.format(str(date.today().year)),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
@@ -124,7 +124,8 @@ ALLOWED_TYPES = {
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ ┻━┻",
     'hypnotic': "(╯°.°）╯ ┻━┻",
     'bored': "(ノ゜-゜)ノ ︵ ┻━┻",
-    'bomb': "( ・_・)ノ⌒●~*"
+    'bomb': "( ・_・)ノ⌒●~*",
+    'eyes': "(:eye: ͜ʖ:eye:) ╯︵ ┻━┻"
 }
 
 # Allowed restore flip types
@@ -153,7 +154,8 @@ WORD_TYPES = {
     'glare': "(╯ಠ_ಠ）╯︵ {0}",
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ {0}",
     'hypnotic': "(╯°.°）╯ {0}",
-    'bored': "(ノ゜-゜)ノ ︵ {0}"
+    'bored': "(ノ゜-゜)ノ ︵ {0}",
+    'eyes': "(:eye: ͜ʖ:eye:) ╯︵ {0}"
 }
 
 # Get list of all types with words
