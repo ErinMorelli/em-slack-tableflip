@@ -15,7 +15,7 @@ View available commands and options [here](#usage).
 
 1. Manually add a new slash command to your team by going to:
 
-        https://my.slack.com/apps/build/custom-integration
+        [https://my.slack.com/apps/build/custom-integration](https://my.slack.com/apps/build/custom-integration)
 
     and selecting the **Slash Commands** option.
 
@@ -31,7 +31,7 @@ View available commands and options [here](#usage).
 
 3. Set the **URL** field to:
 
-        https://slack-tableflip.herokuapp.com
+        [https://slack-tableflip.herokuapp.com](https://slack-tableflip.herokuapp.com)
 
 4. Set the **Method** option to `POST`
 
