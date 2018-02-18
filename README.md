@@ -15,7 +15,7 @@ View available commands and options [here](#usage).
 
 1. Manually add a new slash command to your team by going to:
 
-        https://{your-team}.slack.com/apps/build/custom-integration
+        https://my.slack.com/apps/build/custom-integration
 
     and selecting the **Slash Commands** option.
 
