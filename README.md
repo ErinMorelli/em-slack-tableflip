@@ -98,6 +98,9 @@ Available flip types:
     /tableflip dead
         (╯°□°）╯︵ /(x_x)|
 
+    /tableflip eyes [word]
+        (👁 ͜ʖ👁) ╯︵ ┻━┻
+
     /tableflip force [word]
         (._.) ~ ︵ ┻━┻
 
