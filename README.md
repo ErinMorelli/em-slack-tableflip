@@ -89,6 +89,9 @@ Available flip types:
     /tableflip buffet
         (╯°□°）╯︵ ┻━━━┻
 
+    /tableflip chill [word]
+        ┬─┬ ノ( ◕◡◕ ノ)
+
     /tableflip cry [word]
         (╯'□')╯︵ ┻━┻
 
