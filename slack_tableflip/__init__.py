@@ -20,8 +20,8 @@ import os
 from datetime import date
 from threading import Thread
 from pkg_resources import get_provider
-import keen
 from flask import Flask
+import keen
 
 
 # =============================================================================
@@ -47,8 +47,8 @@ def set_project_info():
         'name_full': 'EM Slack Tableflip',
         'author_url': 'http://www.erinmorelli.com',
         'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
-        'version': '1.9',
-        'version_int': 1.9,
+        'version': '1.10',
+        'version_int': 1.10,
         'package_path': provider.module_path,
         'copyright': '2015-{0}'.format(str(date.today().year)),
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],

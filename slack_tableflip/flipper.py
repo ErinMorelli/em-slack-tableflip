@@ -18,6 +18,7 @@ included in all copies or substantial portions of the Software.
 
 import argparse
 from slacker import Auth, Chat, Error
+
 import slack_tableflip as stf
 from slack_tableflip.storage import Users
 
@@ -238,7 +239,7 @@ def do_flip(flip_type, flip_word=None):
             # Do restore flip
             return do_restore_flip(flip_type, flip_word)
 
-        elif flip_type in stf.WORD_TYPES:
+        if flip_type in stf.WORD_TYPES:
             # Do a word flip
             return do_word_flip(flip_type, flip_word)
 
@@ -340,4 +341,4 @@ def flip(args):
         return err
 
     # Return successful
-    return ('', 204)
+    return '', 204

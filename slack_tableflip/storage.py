@@ -22,9 +22,10 @@ included in all copies or substantial portions of the Software.
 """
 
 from datetime import datetime
-from slack_tableflip import APP
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
+
+from slack_tableflip import APP
 
 
 # Create database

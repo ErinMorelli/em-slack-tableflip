@@ -17,6 +17,7 @@ included in all copies or substantial portions of the Software.
 
 from os import environ
 import newrelic.agent
+
 from slack_tableflip.app import APP
 
 

@@ -19,9 +19,11 @@ from datetime import timedelta
 from urllib.parse import urlencode
 from flask import abort
 from slacker import OAuth, Auth, Error
+from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+
 from slack_tableflip import PROJECT_INFO, report_event
 from slack_tableflip.storage import Users, Teams, DB
-from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+
 
 
 # Create serializer
@@ -84,9 +86,6 @@ def validate_state(state):
             'state_token': state_token
         })
         abort(401)
-
-    # Return success
-    return
 
 
 def get_token(code, scope='user'):

@@ -37,7 +37,7 @@ def gen_data_files(*dirs):
 # Set up slack_tableflip package
 setup(
     name='em-slack-tableflip',
-    version='1.9',
+    version='1.10',
     author='Erin Morelli',
     author_email='erin@erinmorelli.com',
     url='http://slack-tableflip.herokuapp.com',
@@ -62,6 +62,7 @@ setup(
         'pkginfo',
         'requests',
         'itsdangerous',
+        'mysqlclient',
         'newrelic',
         'psycopg2-binary',
         'slacker'

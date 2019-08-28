@@ -16,6 +16,7 @@ included in all copies or substantial portions of the Software.
 """
 
 from flask import redirect, render_template, request
+
 import slack_tableflip.auth as auth
 import slack_tableflip.flipper as flipper
 from slack_tableflip import (APP, PROJECT_INFO, ALLOWED_TYPES, ALL_WORD_TYPES,
