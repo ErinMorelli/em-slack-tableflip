@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # pylint: disable=global-variable-not-assigned,global-statement
 """
-Copyright (c) 2015-2019 Erin Morelli.
+Copyright (c) 2015-2020 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -28,11 +28,9 @@ ERRORS = []
 COMMAND = None
 
 # Set not authenticated error message
-AUTH_MSG = "{0} is not authorized to post on your behalf in this team: {1}"
-AUTH_ERROR = AUTH_MSG.format(
-    stf.PROJECT_INFO['name_full'],
-    '*<{0}|Click here to authorize>*'.format(stf.PROJECT_INFO['auth_url'])
-)
+AUTH_ERROR = f"{stf.PROJECT_INFO['name_full']} is not authorized to post on " \
+           f"your behalf in this team: " \
+           f"*<{stf.PROJECT_INFO['auth_url']}|Click here to authorize>*"
 
 
 class FlipParser(argparse.ArgumentParser):
@@ -67,21 +65,15 @@ class FlipParser(argparse.ArgumentParser):
         elif req_type == 'list':
             list_msg = "*{app_name}* knows these types of flips:\n\n"
 
-            classic_msg = '\n\n\t{0}\n\n'.format(stf.ALLOWED_TYPES['classic'])
+            classic_msg = f"\n\n\t{stf.ALLOWED_TYPES['classic']}\n\n"
             list_msg += "`{command}`" + classic_msg
 
             for allowed_type, desc in sorted(stf.ALLOWED_TYPES.items()):
                 if allowed_type != 'classic':
                     if allowed_type in stf.ALL_WORD_TYPES.keys():
-                        flip_msg = " {type} [word]`\n\n\t{desc}\n\n".format(
-                            type=allowed_type,
-                            desc=desc
-                        )
+                        flip_msg = f" {allowed_type} [word]`\n\n\t{desc}\n\n"
                     else:
-                        flip_msg = " {type}`\n\n\t{desc}\n\n".format(
-                            type=allowed_type,
-                            desc=desc
-                        )
+                        flip_msg = f" {allowed_type}`\n\n\t{desc}\n\n"
 
                     # Set full message for type
                     list_msg += "`{command}" + flip_msg
@@ -92,10 +84,8 @@ class FlipParser(argparse.ArgumentParser):
             ))
 
         elif req_type == 'version':
-            ERRORS.append('{app_name} v{version}'.format(
-                app_name=stf.PROJECT_INFO['name_full'],
-                version=stf.PROJECT_INFO['version']
-            ))
+            ERRORS.append(f"{stf.PROJECT_INFO['name_full']} "
+                          f"v{stf.PROJECT_INFO['version']}")
 
 
 class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
@@ -118,9 +108,7 @@ class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
             stf.report_event('flip_invalid', {
                 'flip': flip_type
             })
-            parser.error(
-                'Flip type "{type}" is not known'.format(type=flip_type)
-            )
+            parser.error(f'Flip type "{flip_type}" is not known')
 
         if flip_type in stf.WORD_TYPES or flip_type in stf.RESTORE_TYPES:
 
@@ -135,10 +123,7 @@ class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
                         'flip': flip_type
                     })
                     parser.error(
-                        'Flip type "{type}" requires words to flip'.format(
-                            type=flip_type
-                        )
-                    )
+                        f'Flip type "{flip_type}" requires words to flip')
 
         # Set values
         setattr(namespace, 'flip_type', flip_type)
@@ -269,10 +254,8 @@ def send_flip(token, table, args):
         })
 
         # Report if we got any errors
-        return '{app} encountered an error: {error}'.format(
-            app=stf.PROJECT_INFO['name_full'],
-            error=str(err)
-        )
+        return f"{stf.PROJECT_INFO['name_full']} encountered an " \
+               f"error: {str(err)}"
 
     # Return without errors
     return None
@@ -287,7 +270,7 @@ def flip(args):
     # Make sure this is a valid slash command
     if args['command'] not in stf.ALLOWED_COMMANDS:
         stf.report_event('command_not_allowed', args)
-        return '"{0}" is not an allowed command'.format(args['command'])
+        return f'"{args["command"]}" is not an allowed command'
 
     # Set global command value to access later
     global COMMAND

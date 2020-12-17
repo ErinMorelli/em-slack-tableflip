@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # pylint: disable=anomalous-backslash-in-string
 """
-Copyright (c) 2015-2019 Erin Morelli.
+Copyright (c) 2015-2020 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -36,7 +36,7 @@ __module__ = "slack_tableflip.{0}".format(__file__)
 def set_project_info():
     """Set project information from setup tools installation."""
     # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
-    base_url = 'https://slack-tableflip.herokuapp.com'
+    base_url = os.environ['BASE_URL']
 
     # Get app info from the dist
     app_name = 'slack_tableflip'
@@ -50,14 +50,14 @@ def set_project_info():
         'version': '1.10',
         'version_int': 1.10,
         'package_path': provider.module_path,
-        'copyright': '2015-{0}'.format(str(date.today().year)),
+        'copyright': f'2015-{str(date.today().year)}',
         'client_secret': os.environ['SLACK_CLIENT_SECRET'],
         'client_id': os.environ['SLACK_CLIENT_ID'],
         'base_url': base_url,
-        'oauth_url': 'https://slack.com/oauth/authorize',
-        'auth_url': '{0}/authenticate'.format(base_url),
-        'user_url': '{0}/validate'.format(base_url),
-        'team_url': '{0}/authorize'.format(base_url),
+        'oauth_url': os.environ['OAUTH_URL'],
+        'auth_url': f'{base_url}/authenticate',
+        'user_url': f'{base_url}/validate',
+        'team_url': f'{base_url}/authorize',
         'team_scope': [
             'commands'
         ],

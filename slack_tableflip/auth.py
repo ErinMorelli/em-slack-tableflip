@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-Copyright (c) 2015-2019 Erin Morelli.
+Copyright (c) 2015-2020 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -36,10 +36,10 @@ def get_redirect(scope='user'):
     state_token = GENERATOR.dumps(PROJECT_INFO['client_id'])
 
     # Setup scope
-    scope_type = '{0}_scope'.format(scope)
+    scope_type = f'{scope}_scope'
 
     # Setup return URL
-    return_url = '{0}_url'.format(scope)
+    return_url = f'{scope}_url'
 
     # URL encode params
     params = urlencode({
@@ -50,7 +50,7 @@ def get_redirect(scope='user'):
     })
 
     # Set full location
-    location = "{0}?{1}".format(PROJECT_INFO['oauth_url'], params)
+    location = f"{PROJECT_INFO['oauth_url']}?{params}"
 
     # Return URL for redirect
     return location
@@ -94,7 +94,7 @@ def get_token(code, scope='user'):
     oauth = OAuth()
 
     # Setup return URL
-    return_url = '{0}_url'.format(scope)
+    return_url = f'{scope}_url'
 
     try:
         # Attempt to make request
@@ -244,7 +244,7 @@ def validate_return(args, scope='user'):
     store_methods[scope](token, token_info)
 
     # Set success url
-    redirect_url = '{0}?success=1'.format(PROJECT_INFO['base_url'])
+    redirect_url = f"{PROJECT_INFO['base_url']}?success=1"
 
     # Return successful
     return redirect_url

@@ -50,10 +50,7 @@ class Users(DB.Model):
 
     def __repr__(self):
         """Friendly representation of User for debugging."""
-        return '<User id={user} team={team}>'.format(
-            user=self.id,
-            team=self.team
-        )
+        return f'<User id={self.id} team={self.team}>'
 
 
 class Teams(DB.Model):
@@ -72,7 +69,7 @@ class Teams(DB.Model):
 
     def __repr__(self):
         """Friendly representation of Team for debugging."""
-        return '<Team id={team}>'.format(team=self.id)
+        return f'<Team id={self.id}>'
 
 
 try:
