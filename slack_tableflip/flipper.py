@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # pylint: disable=global-variable-not-assigned,global-statement
 """
-Copyright (c) 2015-2020 Erin Morelli.
+Copyright (c) 2015-2021 Erin Morelli.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
