@@ -25,26 +25,30 @@
         <div class="wrapper">
             <header>
                 <h1>{{ project.name_full }} <small>{{ project.version }}</small></h1>
-                <p style="margin-bottom:0">Flip some tables on <a href="https://slack.com/">Slack</a>.</p>
+                <p style="margin-bottom:0">Flip some tables on <a href="https://slack.com/" target="_blank" rel="noopener noreferrer">Slack</a>.</p>
                 <p><img src="{{ url_for('static', filename='img/tableflip.png') }}" border="0" alt="{{ project.name_full }}" /></p>
-                <p class="view"><a href="{{ project.github_url }}">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
+                <p class="view"><a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
                 <ul>
-                    <li><a href="{{ project.github_url }}/zipball/master">Download <strong>ZIP File</strong></a></li>
-                    <li><a href="{{ project.github_url }}/tarball/master">Download <strong>TAR Ball</strong></a></li>
-                    <li><a href="{{ project.github_url }}">Fork On <strong>GitHub</strong></a></li>
+                    <li><a href="{{ project.github_url }}/zipball/master" target="_blank" rel="noopener noreferrer">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="{{ project.github_url }}/tarball/master" target="_blank" rel="noopener noreferrer">Download <strong>TAR Ball</strong></a></li>
+                    <li><a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">Fork On <strong>GitHub</strong></a></li>
                 </ul>
             </header>
             <section>
                 <h1>Let’s Flip Some Tables!</h1>
 
-                <p>Built using emojis from <a href="http://www.emoticonfun.org/flip/" target="_blank">here</a>, <a href="http://emojicons.com/table-flipping" target="_blank">here</a>, and <a href="http://tableflipping.com/" target="_blank">here</a>.</p>
+                <p>Built using emojis from <a href="http://www.emoticonfun.org/flip/" target="_blank" rel="noopener noreferrer">here</a>, <a href="http://emojicons.com/table-flipping" target="_blank" rel="noopener noreferrer">here</a>, and <a href="http://tableflipping.com/" target="_blank" rel="noopener noreferrer">here</a>.</p>
 
                 <hr>
 
                 <h2 id="quick-setup">Quick Setup</h2>
 
                 <p>Use this button to automatically add the <code>/tableflip</code> slash command to your team:</p>
-                <p><a href="{{ url_for('teams') }}"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a></p>
+                <p>
+                    <a href="{{ url_for('teams') }}" rel="noopener noreferrer">
+                        <img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x">
+                    </a>
+                </p>
 
                 <p>View available commands and options <a href="#usage">here</a>.</p>
 
@@ -55,7 +59,11 @@
                 <ol>
                     <li>
                         <p>Manually add a new slash command to your team by going to:</p>
-                        <pre><a href="https://my.slack.com/apps/build/custom-integration" target="_blank">https://my.slack.com/apps/build/custom-integration</a></pre>
+                        <pre>
+                            <a href="https://my.slack.com/apps/build/custom-integration" target="_blank" rel="noopener noreferrer">
+                                https://my.slack.com/apps/build/custom-integration
+                            </a>
+                        </pre>
                         <p>and selecting the <strong>Slash Commands</strong> option.</p>
                     </li>
                     <li>
@@ -71,7 +79,7 @@
                     </li>
                     <li>
                         <p>Set the <strong>URL</strong> field to:</p>
-                        <pre><a href="{{ project.base_url }}" target="_blank">{{ project.base_url }}</a></pre>
+                        <pre><a href="{{ project.base_url }}" target="_blank" rel="noopener noreferrer">{{ project.base_url }}</a></pre>
                     </li>
                     <li>
                         <p>Set the <strong>Method</strong> option to <code>POST</code></p>
@@ -136,8 +144,8 @@
 
             </section>
             <footer>
-                <p>This project is maintained by <a href="http://github.com/ErinMorelli">Erin Morelli</a></p>
-                <p><small>Theme by <a href="https://github.com/orderedlist">orderedlist</a><br />&copy; {{ project.copyright }}</small></p>
+                <p>This project is maintained by <a href="http://github.com/ErinMorelli" target="_blank" rel="noopener noreferrer">Erin Morelli</a></p>
+                <p><small>Theme by <a href="https://github.com/orderedlist" target="_blank" rel="noopener noreferrer">orderedlist</a><br />&copy; {{ project.copyright }}</small></p>
             </footer>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
