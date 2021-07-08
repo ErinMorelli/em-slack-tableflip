@@ -3,6 +3,8 @@ Flip some tables on [Slack](https://slack.com).
 
 Built using emojis from [here](http://www.emoticonfun.org/flip/), [here](http://emojicons.com/table-flipping), and [here](http://tableflipping.com/).
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ErinMorelli_em-slack-tableflip&metric=alert_status)](https://sonarcloud.io/dashboard?id=ErinMorelli_em-slack-tableflip)
+
 ----------
 ## Quick Setup
 
