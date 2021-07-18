@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# pylint: disable=anomalous-backslash-in-string
 """
 Copyright (c) 2015-2021 Erin Morelli.
 
@@ -19,64 +16,49 @@ included in all copies or substantial portions of the Software.
 import os
 from datetime import date
 from threading import Thread
-from pkg_resources import get_provider
-from flask import Flask
+
 import keen
+from flask import Flask
+from pkg_resources import get_provider
 
 
-# =============================================================================
-#  App Constants
-# =============================================================================
+# Common project metadata
+__version__ = open('VERSION').read()
+__app_name__ = 'EM Slack Tableflip'
+__copyright__ = f'2015-{str(date.today().year)}'
 
-# Set module name
-__module__ = "slack_tableflip.{0}".format(__file__)
-
-
-# Get module info
-def set_project_info():
-    """Set project information from setup tools installation."""
-    # CUSTOMIZE THIS VALUE FOR YOUR OWN INSTALLATION
-    base_url = os.environ['BASE_URL']
-
-    # Get app info from the dist
-    app_name = 'slack_tableflip'
-    provider = get_provider(app_name)
-
-    return {
-        'name': app_name,
-        'name_full': 'EM Slack Tableflip',
-        'author_url': 'http://www.erinmorelli.com',
-        'github_url': 'https://github.com/ErinMorelli/em-slack-tableflip',
-        'version': '1.10',
-        'version_int': 1.10,
-        'package_path': provider.module_path,
-        'copyright': f'2015-{str(date.today().year)}',
-        'client_secret': os.environ['SLACK_CLIENT_SECRET'],
-        'client_id': os.environ['SLACK_CLIENT_ID'],
-        'base_url': base_url,
-        'oauth_url': os.environ['OAUTH_URL'],
-        'auth_url': f'{base_url}/authenticate',
-        'user_url': f'{base_url}/validate',
-        'team_url': f'{base_url}/authorize',
-        'team_scope': [
-            'commands'
-        ],
-        'user_scope': [
-            'chat:write:bot',
-            'chat:write:user',
-            'identify'
-        ]
-    }
-
+# Project URLs
+base_url = os.environ.get('BASE_URL', None)
+github_url = os.environ.get('GITHUB_URL', None)
 
 # Project info
-PROJECT_INFO = set_project_info()
+project_info = {
+    'name': __app_name__,
+    'version': __version__,
+    'copyright': __copyright__,
+    'base_url': base_url,
+    'github_url': github_url,
+    'client_secret': os.environ.get('SLACK_CLIENT_SECRET', None),
+    'client_id': os.environ.get('SLACK_CLIENT_ID', None),
+    'oauth_url': os.environ.get('OAUTH_URL', None),
+    'auth_url': f'{base_url}/authenticate',
+    'user_url': f'{base_url}/validate',
+    'team_url': f'{base_url}/authorize',
+    'team_scope': [
+        'commands'
+    ],
+    'user_scope': [
+        'chat:write:bot',
+        'chat:write:user',
+        'identify'
+    ]
+}
 
 # Set the template directory
-TEMPLATE_DIR = os.path.join(PROJECT_INFO['package_path'], 'templates')
+template_dir = os.path.join(get_provider(__name__).module_path, 'templates')
 
 # Allowed slash commands
-ALLOWED_COMMANDS = [
+allowed_commands = [
     '/flip',
     '/fliptable',
     '/tableflip',
@@ -89,7 +71,7 @@ ALLOWED_COMMANDS = [
 #   http://www.emoticonfun.org/flip/
 #   http://emojicons.com/table-flipping
 #   http://tableflipping.com/
-ALLOWED_TYPES = {
+allowed_types = {
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ ┻━┻",
     'battle': "(╯°□°)╯︵ ┻━┻ ︵ ╯(°□° ╯)",
     'bear': "ʕノ•ᴥ•ʔノ ︵ ┻━┻",
@@ -130,14 +112,14 @@ ALLOWED_TYPES = {
 }
 
 # Allowed restore flip types
-RESTORE_TYPES = {
+restore_types = {
     'chill': "{0} ノ( ◕◡◕ ノ)",
     'relax': "{0} ノ( º _ ºノ)",
     'whoops': "{0} ¯\_(ツ)"
 }
 
 # Allowed word flip types
-WORD_TYPES = {
+word_types = {
     'adorable': "(づ｡◕‿‿◕｡)づ ︵ {0}",
     'bear': "ʕノ•ᴥ•ʔノ ︵ {0}",
     'bored': "(ノ゜-゜)ノ ︵ {0}",
@@ -161,10 +143,10 @@ WORD_TYPES = {
 }
 
 # Get list of all types with words
-ALL_WORD_TYPES = {**WORD_TYPES, **RESTORE_TYPES}
+all_word_types = {**word_types, **restore_types}
 
 # Flipped character mapping
-FLIPPED_CHARS = {
+flipped_chars = {
     " ": " ",
     "a": "ɐ",
     "b": "q",
@@ -250,10 +232,23 @@ FLIPPED_CHARS = {
     "_": "‾"
 }
 
+# Set up Flask app
+app = Flask(
+    'em-slack-tableflip',
+    template_folder=template_dir,
+    static_folder=template_dir
+)
+
+# Set up flask config
+app.config.update({
+    'SECRET_KEY': os.environ.get('SECURE_KEY', None),
+    'SQLALCHEMY_DATABASE_URI': os.environ.get('DATABASE_URL', None),
+    'SQLALCHEMY_TRACK_MODIFICATIONS': True
+})
+
 
 def report_event(name, event):
     """Asynchronously report an event."""
-    # Set up thread
     event_report = Thread(
         target=keen.add_event,
         args=(name, event)
@@ -264,23 +259,3 @@ def report_event(name, event):
 
     # Start event report
     event_report.start()
-
-
-# =============================================================================
-# Flask App Configuration
-# =============================================================================
-
-# Initialize flask app
-APP = Flask(
-    'em-slack-tableflip',
-    template_folder=TEMPLATE_DIR,
-    static_folder=TEMPLATE_DIR
-)
-
-# Set up flask config
-# SET THESE ENV VALUES FOR YOUR OWN INSTALLATION
-APP.config.update({
-    'SECRET_KEY': os.environ['SECURE_KEY'],
-    'SQLALCHEMY_DATABASE_URI': os.environ['DATABASE_URL'],
-    'SQLALCHEMY_TRACK_MODIFICATIONS': True
-})

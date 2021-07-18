@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 """
 Copyright (c) 2015-2021 Erin Morelli.
 
@@ -17,13 +15,11 @@ included in all copies or substantial portions of the Software.
 
 from flask import redirect, render_template, request
 
-import slack_tableflip.auth as auth
-import slack_tableflip.flipper as flipper
-from slack_tableflip import (APP, PROJECT_INFO, ALLOWED_TYPES, ALL_WORD_TYPES,
-                             ALLOWED_COMMANDS, report_event)
+from . import (app, project_info, allowed_types, all_word_types,
+               allowed_commands, report_event, auth, flipper)
 
 
-@APP.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
     """Render app homepage template."""
     if request.method == 'POST':
@@ -32,32 +28,32 @@ def home():
 
     return render_template(
         'index.html',
-        project=PROJECT_INFO,
-        allowed_types=ALLOWED_TYPES,
-        allowed_word_types=ALL_WORD_TYPES,
-        allowed_commands=ALLOWED_COMMANDS
+        project=project_info,
+        allowed_types=allowed_types,
+        allowed_word_types=all_word_types,
+        allowed_commands=allowed_commands
     )
 
 
-@APP.route('/authenticate')
+@app.route('/authenticate', methods=['GET'])
 def authenticate():
     """Redirect to generated Slack user authentication url."""
     return redirect(auth.get_redirect())
 
 
-@APP.route('/validate')
+@app.route('/validate', methods=['GET'])
 def validate():
     """Validate the returned values from user authentication."""
     return redirect(auth.validate_return(request.args.to_dict()))
 
 
-@APP.route('/teams')
+@app.route('/teams', methods=['GET'])
 def teams():
     """Redirect the to the Slack team authentication url."""
     return redirect(auth.get_redirect('team'))
 
 
-@APP.route('/authorize')
+@app.route('/authorize', methods=['GET'])
 def authorize():
     """Authorize the returned values from team authentication."""
     return redirect(auth.validate_return(request.args.to_dict(), 'team'))

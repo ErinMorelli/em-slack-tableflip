@@ -1,9 +1,9 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="chrome=1">
-        <title>{{ project.name_full }}</title>
+        <title>{{ project.name }}</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/pygment_trac.css') }}">
@@ -24,10 +24,10 @@
         {% endif %}
         <div class="wrapper">
             <header>
-                <h1>{{ project.name_full }} <small>{{ project.version }}</small></h1>
-                <p style="margin-bottom:0">Flip some tables on <a href="https://slack.com/" target="_blank" rel="noopener noreferrer">Slack</a>.</p>
-                <p><img src="{{ url_for('static', filename='img/tableflip.png') }}" border="0" alt="{{ project.name_full }}" /></p>
-                <p class="view"><a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
+                <h1>{{ project.name }} <small>{{ project.version }}</small></h1>
+                <p style="margin-bottom:0">Flip some tables on <a href="https://slack.com/">Slack</a>.</p>
+                <p><img src="{{ url_for('static', filename='img/tableflip.png') }}" border="0" alt="{{ project.name }}" /></p>
+                <p class="view"><a href="{{ project.github_url }}">View the Project on GitHub <small>ErinMorelli/em-slack-tableflip</small></a></p>
                 <ul>
                     <li><a href="{{ project.github_url }}/zipball/master" target="_blank" rel="noopener noreferrer">Download <strong>ZIP File</strong></a></li>
                     <li><a href="{{ project.github_url }}/tarball/master" target="_blank" rel="noopener noreferrer">Download <strong>TAR Ball</strong></a></li>
@@ -59,11 +59,7 @@
                 <ol>
                     <li>
                         <p>Manually add a new slash command to your team by going to:</p>
-                        <pre>
-                            <a href="https://my.slack.com/apps/build/custom-integration" target="_blank" rel="noopener noreferrer">
-                                https://my.slack.com/apps/build/custom-integration
-                            </a>
-                        </pre>
+                        <pre><a href="https://my.slack.com/apps/build/custom-integration" target="_blank" rel="noopener noreferrer">https://my.slack.com/apps/build/custom-integration</a></pre>
                         <p>and selecting the <strong>Slash Commands</strong> option.</p>
                     </li>
                     <li>
@@ -90,7 +86,7 @@
                             <li>Check the box next to <strong>Show this command in the autocomplete list</strong>.</li>
                             <li>Set the <strong>Description</strong> field to <code>"Flip some tables"</code>.</li>
                             <li>Set the <strong>Usage hint</strong> field to <code>"[type] (or 'help', 'list')"</code>.</li>
-                            <li>Set the <strong>Descriptive Label</strong> field to <code>"{{ project.name_full }}"</code>.</li>
+                            <li>Set the <strong>Descriptive Label</strong> field to <code>"{{ project.name }}"</code>.</li>
                         </ul>
                     </li>
                     <li>
@@ -122,9 +118,13 @@
 
                 <p><strong>Note:</strong> The <code>word</code> input is optional and will display the flip with the provided word. Not all flip types can do word flips. Without a word, the flip will display the standard table.</p>
 
-                <p>Available flip types:</p>
+                <p id="flip-types">Available flip types:</p>
 
-                <table>
+                <table aria-describedby="flip-types">
+                    <tr>
+                        <th scope="col">Command</th>
+                        <th scope="col">Emoji</th>
+                    </tr>
                     <tr>
                         <td><code>/tableflip</code></td>
                         <td><code>{{ allowed_types['classic'] }}</code></td>
@@ -149,6 +149,9 @@
             </footer>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.4.min.js"
+                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+                crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='js/app.js') }}"></script>
         <script src="{{ url_for('static', filename='js/scale.fix.js') }}"></script>
         <script>

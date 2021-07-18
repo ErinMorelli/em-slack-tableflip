@@ -1,12 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# pylint: disable=invalid-name,too-few-public-methods
 """
-EM Slack Tableflip module: slack_tableflip.storage.
-
-    - Sets database schema for storing user data
-    - Initializes database structure
-
 Copyright (c) 2015-2016 Erin Morelli
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -21,51 +13,71 @@ The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 """
 
+import os
 from datetime import datetime
+
+from cryptography.fernet import Fernet
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 
-from slack_tableflip import APP
+from . import app
 
 
 # Create database
-DB = SQLAlchemy(APP)
+db = SQLAlchemy(app)
 
 
-class Users(DB.Model):
+class EncryptedToken:
+    """Mixin for managing token encryption."""
+    __cipher = Fernet(os.environ.get('TOKEN_KEY', '').encode('utf8'))
+
+    encrypted_token = db.Column(db.BLOB)
+
+    def __init__(self, token):
+        """Set encrypted token."""
+        self.set_token(token)
+
+    def set_token(self, token):
+        """Encrypt and set token value."""
+        if not isinstance(token, bytes):
+            token = token.encode('utf-8')
+        self.encrypted_token = self.__cipher.encrypt(token)
+
+    def get_token(self):
+        """Retrieve decrypted token."""
+        return self.__cipher.decrypt(self.encrypted_token).decode('utf-8')
+
+
+class User(db.Model, EncryptedToken):
     """Table for storing authenticated user data."""
-
     __tablename__ = 'flip_users'
 
-    id = DB.Column(DB.String(16), primary_key=True)
-    team = DB.Column(DB.String(16))
-    token = DB.Column(DB.String(255))
-    added = DB.Column(DB.DateTime, default=datetime.now)
+    id = db.Column(db.String(16), primary_key=True)
+    team = db.Column(db.String(16))
+    added = db.Column(db.DateTime, default=datetime.now)
 
     def __init__(self, user_id, team_id, token):
         """Initialize new User in db."""
+        super(EncryptedToken).__init__(token)
         self.id = user_id
         self.team = team_id
-        self.token = token
 
     def __repr__(self):
         """Friendly representation of User for debugging."""
         return f'<User id={self.id} team={self.team}>'
 
 
-class Teams(DB.Model):
+class Team(db.Model, EncryptedToken):
     """Table for storing authenticated user data."""
-
     __tablename__ = 'flip_teams'
 
-    id = DB.Column(DB.String(16), primary_key=True)
-    token = DB.Column(DB.String(255))
-    added = DB.Column(DB.DateTime, default=datetime.now)
+    id = db.Column(db.String(16), primary_key=True)
+    added = db.Column(db.DateTime, default=datetime.now)
 
     def __init__(self, team_id, token):
         """Initialize new Team in db."""
+        super(EncryptedToken).__init__(token)
         self.id = team_id
-        self.token = token
 
     def __repr__(self):
         """Friendly representation of Team for debugging."""
@@ -74,8 +86,7 @@ class Teams(DB.Model):
 
 try:
     # Attempt to initialize database
-    DB.create_all()
-
+    db.create_all()
 except SQLAlchemyError:
     # Other wise, refresh the session
-    DB.session.rollback()
+    db.session.rollback()
