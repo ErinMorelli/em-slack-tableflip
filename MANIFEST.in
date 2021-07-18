@@ -1,8 +1,11 @@
 # Basic relevant text files
-include LICENSE README.md
+include LICENSE.txt README.md
 
 # Include template files
-recursive-include slack_tableflip/templates *
+recursive-include slack_tableflip/templates *.html
+recursive-include slack_tableflip/templates *.png
+recursive-include slack_tableflip/templates *.css
+recursive-include slack_tableflip/templates *.js
 
 # Exclude junk
 global-exclude .DS_Store

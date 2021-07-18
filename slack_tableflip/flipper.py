@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-# pylint: disable=global-variable-not-assigned,global-statement
 """
 Copyright (c) 2015-2021 Erin Morelli.
 
@@ -19,18 +16,19 @@ included in all copies or substantial portions of the Software.
 import argparse
 from slacker import Auth, Chat, Error
 
-import slack_tableflip as stf
-from slack_tableflip.storage import Users
+from .storage import User
+from . import (project_info, allowed_types, all_word_types, word_types,
+               restore_types, flipped_chars, allowed_commands, report_event)
 
 
 # Set globals
-ERRORS = []
-COMMAND = None
+errors = []
+command = None
 
 # Set not authenticated error message
-AUTH_ERROR = f"{stf.PROJECT_INFO['name_full']} is not authorized to post on " \
-           f"your behalf in this team: " \
-           f"*<{stf.PROJECT_INFO['auth_url']}|Click here to authorize>*"
+auth_error = f"{project_info['name']} is not authorized to post on " \
+             f"your behalf in this team: " \
+             f"*<{project_info['auth_url']}|Click here to authorize>*"
 
 
 class FlipParser(argparse.ArgumentParser):
@@ -38,13 +36,13 @@ class FlipParser(argparse.ArgumentParser):
 
     def error(self, message):
         """Store all error messages in global errors list."""
-        global ERRORS
-        ERRORS.append(message)
+        global errors
+        errors.append(message)
 
     def print_help(self, req_type=None):  # pylint: disable=arguments-differ
         """Generate help and list messages."""
-        global ERRORS
-        global COMMAND
+        global errors
+        global command
 
         if req_type == 'help':
             help_msg = "*{app_name}* can flip all kinds of tables for you!\n"
@@ -57,20 +55,20 @@ class FlipParser(argparse.ArgumentParser):
             help_msg += "`{command} list`\n\tLists available flip types\n\n"
             help_msg += "`{command} help`\n\tShows this message\n"
 
-            ERRORS.append(help_msg.format(
-                app_name=stf.PROJECT_INFO['name_full'],
-                command=COMMAND
+            errors.append(help_msg.format(
+                app_name=project_info['name'],
+                command=command
             ))
 
         elif req_type == 'list':
             list_msg = "*{app_name}* knows these types of flips:\n\n"
 
-            classic_msg = f"\n\n\t{stf.ALLOWED_TYPES['classic']}\n\n"
+            classic_msg = f"\n\n\t{allowed_types['classic']}\n\n"
             list_msg += "`{command}`" + classic_msg
 
-            for allowed_type, desc in sorted(stf.ALLOWED_TYPES.items()):
+            for allowed_type, desc in sorted(allowed_types.items()):
                 if allowed_type != 'classic':
-                    if allowed_type in stf.ALL_WORD_TYPES.keys():
+                    if allowed_type in all_word_types.keys():
                         flip_msg = f" {allowed_type} [word]`\n\n\t{desc}\n\n"
                     else:
                         flip_msg = f" {allowed_type}`\n\n\t{desc}\n\n"
@@ -78,17 +76,16 @@ class FlipParser(argparse.ArgumentParser):
                     # Set full message for type
                     list_msg += "`{command}" + flip_msg
 
-            ERRORS.append(list_msg.format(
-                app_name=stf.PROJECT_INFO['name_full'],
-                command=COMMAND
+            errors.append(list_msg.format(
+                app_name=project_info['name'],
+                command=command
             ))
 
         elif req_type == 'version':
-            ERRORS.append(f"{stf.PROJECT_INFO['name_full']} "
-                          f"v{stf.PROJECT_INFO['version']}")
+            errors.append(f"{project_info['name']} v{project_info['version']}")
 
 
-class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
+class TypeAction(argparse.Action):
     """Custom Action object for validating and parsing flip arguments."""
 
     def __call__(self, parser, namespace, values, option_string=None):
@@ -102,86 +99,59 @@ class TypeAction(argparse.Action):  # pylint: disable=too-few-public-methods
             return
 
         # Check that the type is valid
-        if (flip_type not in stf.ALLOWED_TYPES and
-                flip_type not in stf.WORD_TYPES and
-                flip_type not in stf.RESTORE_TYPES):
-            stf.report_event('flip_invalid', {
-                'flip': flip_type
-            })
+        if (flip_type not in allowed_types and
+                flip_type not in word_types and
+                flip_type not in restore_types):
+            report_event('flip_invalid', {'flip': flip_type})
             parser.error(f'Flip type "{flip_type}" is not known')
 
-        if flip_type in stf.WORD_TYPES or flip_type in stf.RESTORE_TYPES:
-
+        # Set word value
+        if flip_type in word_types or flip_type in restore_types:
             if len(values) >= 2:
-                # Set word value
                 flip_word = ' '.join(values[1:len(values)])
-
-            else:
-                # Check for flip that requires words
-                if flip_type == 'word':
-                    stf.report_event('flip_missing_word', {
-                        'flip': flip_type
-                    })
-                    parser.error(
-                        f'Flip type "{flip_type}" requires words to flip')
+            elif flip_type == 'word':
+                report_event('flip_missing_word', {'flip': flip_type})
+                parser.error(f'Flip type "{flip_type}" requires words to flip')
 
         # Set values
         setattr(namespace, 'flip_type', flip_type)
         setattr(namespace, 'flip_word', flip_word)
 
-        return
-
 
 def get_parser():
     """Set up and returns custom ArgumentParser object."""
-    # Create flip parser
     parser = FlipParser()
-
-    # Add valid args
     parser.add_argument('flip_type', nargs='+', action=TypeAction)
-
     return parser
 
 
 def check_user(args):
     """Return authenticated user token data."""
-    # Look for user in DB
-    user = Users.query.get(args['user_id'])
+    user = User.query.get(args['user_id'])
 
-    # Validate user
-    if not user:
-        return None
-
-    # Validate team
-    if user.team != args['team_id']:
+    # Validate user and team
+    if not user or user.team != args['team_id']:
         return None
 
     # Return token
-    return user.token
+    return user.get_token()
 
 
 def is_valid_token(token):
     """Check that the user has a valid token."""
-    # Set auth object
     auth = Auth(token)
 
     try:
         # Make request
         result = auth.test()
-
     except Error as err:
         # Check for auth errors
-        stf.report_event(str(err), {
-            'token': token
-        })
+        report_event(str(err), {})
         return False
 
     # Check for further errors
     if not result.successful:
-        stf.report_event('token_invalid', {
-            'token': token,
-            'result': result.__dict__
-        })
+        report_event('token_invalid', {'result': result.__dict__})
         return False
 
     # Return successful
@@ -190,51 +160,40 @@ def is_valid_token(token):
 
 def do_restore_flip(flip_type, words):
     """Restore a flipped word."""
-    flip_base = stf.RESTORE_TYPES[flip_type]
-
+    flip_base = restore_types[flip_type]
     return flip_base.format(words)
 
 
 def do_word_flip(flip_type, words):
     """Flip some words."""
-    # Flip characters using mapping
-    char_list = [
-        stf.FLIPPED_CHARS.get(char, char)
-        for char in words
-    ]
+    char_list = [flipped_chars.get(char, char) for char in words]
     char_list.reverse()
-
     flipped_words = ''.join(char_list)
-
-    flip_base = stf.WORD_TYPES[flip_type]
-
-    return flip_base.format(flipped_words)
+    return word_types[flip_type].format(flipped_words)
 
 
 def do_flip(flip_type, flip_word=None):
     """Return the requested flip."""
-    # Fall back to a basic flip
     if flip_type == '':
         flip_type = 'classic'
 
     # Check for word flip
     if flip_word is not None:
 
-        if flip_type in stf.RESTORE_TYPES:
+        if flip_type in restore_types:
             # Do restore flip
             return do_restore_flip(flip_type, flip_word)
 
-        if flip_type in stf.WORD_TYPES:
+        if flip_type in word_types:
             # Do a word flip
             return do_word_flip(flip_type, flip_word)
 
     # Do a regular flip
-    return stf.ALLOWED_TYPES[flip_type]
+    return allowed_types[flip_type]
 
 
 def send_flip(token, table, args):
     """Post the flip as the authenticated user in Slack."""
-    # Set up chat object
     chat = Chat(token)
 
     try:
@@ -245,17 +204,10 @@ def send_flip(token, table, args):
             username=args['user_id'],
             as_user=True
         )
-
     except Error as err:
-        stf.report_event(str(err), {
-            'token': token,
-            'table': table,
-            'args': args
-        })
-
         # Report if we got any errors
-        return f"{stf.PROJECT_INFO['name_full']} encountered an " \
-               f"error: {str(err)}"
+        report_event(str(err), {'table': table, 'args': args})
+        return f"{project_info['name']} encountered an error: {str(err)}"
 
     # Return without errors
     return None
@@ -263,29 +215,25 @@ def send_flip(token, table, args):
 
 def flip(args):
     """Run flip functions."""
-    # Reset global error tracker
-    global ERRORS
-    ERRORS = []
+    global errors
+    errors = []
 
     # Make sure this is a valid slash command
-    if args['command'] not in stf.ALLOWED_COMMANDS:
-        stf.report_event('command_not_allowed', args)
+    if args['command'] not in allowed_commands:
+        report_event('command_not_allowed', args)
         return f'"{args["command"]}" is not an allowed command'
 
     # Set global command value to access later
-    global COMMAND
-    COMMAND = args['command']
+    global command
+    command = args['command']
 
     # Check to see if user has authenticated with the app
     token = check_user(args)
 
     # If the user or token is not valid, let them know
     if token is None or not is_valid_token(token):
-        stf.report_event('auth_error', {
-            'args': args,
-            'token': token
-        })
-        return AUTH_ERROR
+        report_event('auth_error', {'args': args})
+        return auth_error
 
     # If there's no input, use the default flip
     if not args['text']:
@@ -296,18 +244,14 @@ def flip(args):
         # Set up text args for parser
         text_args = args['text'].split()
 
-        # Get parser
-        parser = get_parser()
-
         # Parse args
+        parser = get_parser()
         result = parser.parse_args(text_args)
 
         # Report any errors from parser
-        if ERRORS:
-            stf.report_event('parser_errors', {
-                'errors': ERRORS
-            })
-            return ERRORS[0]
+        if errors:
+            report_event('parser_errors', {'errors': errors})
+            return errors[0]
 
         # Set values
         flip_type = result.flip_type
