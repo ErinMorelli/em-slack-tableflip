@@ -192,7 +192,7 @@ def store_team(token, info):
 
 def validate_return(args, scope='user'):
     """Run data validation functions."""
-    if not args['state'] or not args['code']:
+    if 'state' not in args or 'code' not in args:
         report_event('missing_args', args)
         abort(400)
 
