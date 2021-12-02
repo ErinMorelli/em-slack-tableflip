@@ -33,10 +33,6 @@ class EncryptedToken:
 
     encrypted_token = db.Column(db.BLOB)
 
-    def __init__(self, token):
-        """Set encrypted token."""
-        self.set_token(token)
-
     def set_token(self, token):
         """Encrypt and set token value."""
         if not isinstance(token, bytes):
@@ -58,9 +54,9 @@ class User(db.Model, EncryptedToken):
 
     def __init__(self, user_id, team_id, token):
         """Initialize new User in db."""
-        super(EncryptedToken).__init__(token)
         self.id = user_id
         self.team = team_id
+        self.set_token(token)
 
     def __repr__(self):
         """Friendly representation of User for debugging."""
@@ -76,8 +72,8 @@ class Team(db.Model, EncryptedToken):
 
     def __init__(self, team_id, token):
         """Initialize new Team in db."""
-        super(EncryptedToken).__init__(token)
         self.id = team_id
+        self.set_token(token)
 
     def __repr__(self):
         """Friendly representation of Team for debugging."""
