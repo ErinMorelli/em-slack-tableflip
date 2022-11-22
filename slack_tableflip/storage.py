@@ -82,7 +82,8 @@ class Team(db.Model, EncryptedToken):
 
 try:
     # Attempt to initialize database
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 except SQLAlchemyError:
     # Other wise, refresh the session
     db.session.rollback()
