@@ -241,7 +241,7 @@ app = Flask(
 
 # Set up flask config
 app.config.update({
-    'SECRET_KEY': os.environ.get('SECURE_KEY', None),
+    'SECRET_KEY': os.environ.get('SECURE_KEY_STR', None),
     'SQLALCHEMY_DATABASE_URI': os.environ.get('DATABASE_URL', None),
     'SQLALCHEMY_TRACK_MODIFICATIONS': True
 })
