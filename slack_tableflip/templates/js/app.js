@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
 
     if (window.location.search !== '') {
         // Remove everything after '?'
-        var clean_url = window.location.href.split('?')[0];
+        const clean_url = window.location.href.split('?')[0];
 
         // Update URL
         window.history.replaceState(null, null, clean_url);
@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         // Get notice element
-        var $el = $('.alert');
+        const $el = $('.alert');
 
         // Remove notice
         $el.fadeTo(100, 0, function () {
