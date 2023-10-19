@@ -34,13 +34,14 @@ setup(
         'cryptography',
         'Flask',
         'Flask-SQLAlchemy',
-        'keen',
-        'pkginfo',
-        'requests',
+        'gunicorn',
         'itsdangerous',
+        'keen',
         'mysqlclient',
         'newrelic',
+        'pkginfo',
         'psycopg2-binary',
+        'requests',
         'slacker'
     ]
 )

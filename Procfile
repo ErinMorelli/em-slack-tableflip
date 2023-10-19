@@ -1,1 +1,1 @@
-web: python tableflip.py
+web: gunicorn slack_tableflip.app:app
