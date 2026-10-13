@@ -19,7 +19,6 @@ from threading import Thread
 
 import keen
 from flask import Flask
-from pkg_resources import get_provider
 
 
 # Common project metadata
@@ -55,7 +54,7 @@ project_info = {
 }
 
 # Set the template directory
-template_dir = os.path.join(get_provider(__name__).module_path, 'templates')
+template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 
 # Allowed slash commands
 allowed_commands = [

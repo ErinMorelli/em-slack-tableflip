@@ -15,12 +15,12 @@ The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 
 setup(
     name='em-slack-tableflip',
-    version=open('VERSION').read(),
+    version=open('VERSION').read().strip(),
     author='Erin Morelli',
     author_email='me@erin.dev',
     url='https://slack-tableflip.herokuapp.com',
@@ -28,7 +28,7 @@ setup(
     platforms='Linux, OSX',
     description='Flip some tables on Slack.',
     long_description=open('README.md').read(),
-    packages=find_packages(),
+    packages=find_namespace_packages(include=['slack_tableflip*']),
     include_package_data=True,
     install_requires=[
         'cryptography',
