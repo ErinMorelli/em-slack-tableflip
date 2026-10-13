@@ -47,9 +47,7 @@ project_info = {
         'commands'
     ],
     'user_scope': [
-        'chat:write:bot',
-        'chat:write:user',
-        'identify'
+        'chat:write'
     ]
 }
 
@@ -92,21 +90,21 @@ allowed_types = {
     'laptop': "(ノÒ益Ó)ノ彡▔▔▏",
     'magic': "(/¯◡ ‿ ◡)/¯ ~ ┻━┻",
     'monocle': "(╯ಠ_ರೃ)╯︵ ┻━┻",
-    'opposite': "ノ┬─┬ノ ︵ ( \o°o)\\",
+    'opposite': "ノ┬─┬ノ ︵ ( \\o°o)\\",
     'owl': "(ʘ∇ʘ)ク 彡 ┻━┻",
-    'people': "(/ .□.)\ ︵╰(゜Д゜)╯︵ /(.□. \)",
-    'person': "(╯°□°）╯︵ /(.□. \)",
+    'people': "(/ .□.)\\ ︵╰(゜Д゜)╯︵ /(.□. \\)",
+    'person': "(╯°□°）╯︵ /(.□. \\)",
     'pudgy': "(ノ ゜Д゜)ノ ︵ ┻━┻",
     'rage': "(ﾉಥ益ಥ）ﾉ﻿ ┻━┻",
     'relax': "┬─┬ノ( º _ ºノ)",
     'return': "(ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)",
     'robot': "┗[© ♒ ©]┛ ︵ ┻━┻",
-    'shrug': "┻━┻ ︵﻿ ¯\(ツ)/¯ ︵ ┻━┻",
+    'shrug': "┻━┻ ︵﻿ ¯\\(ツ)/¯ ︵ ┻━┻",
     'strong': "/(ò.ó)┛彡┻━┻",
     'tantrum': "┻━┻ ︵ヽ(`Д´)ﾉ︵﻿ ┻━┻",
     'teeth': "(ノಠ益ಠ)ノ彡┻━┻",
     'two': "┻━┻ ︵╰(°□°)╯︵ ┻━┻",
-    'whoops': "┬──┬﻿ ¯\_(ツ)",
+    'whoops': "┬──┬﻿ ¯\\_(ツ)",
     'yelling': "(┛◉Д◉)┛彡┻━┻"
 }
 
@@ -114,7 +112,7 @@ allowed_types = {
 restore_types = {
     'chill': "{0} ノ( ◕◡◕ ノ)",
     'relax': "{0} ノ( º _ ºノ)",
-    'whoops': "{0} ¯\_(ツ)"
+    'whoops': "{0} ¯\\_(ツ)"
 }
 
 # Allowed word flip types

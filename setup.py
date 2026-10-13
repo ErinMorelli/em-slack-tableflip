@@ -42,6 +42,6 @@ setup(
         'pkginfo',
         'psycopg2-binary',
         'requests',
-        'slacker'
+        'slack_sdk'
     ]
 )

@@ -14,9 +14,10 @@ included in all copies or substantial portions of the Software.
 """
 
 import argparse
-from slacker import Auth, Chat, Error
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 
-from .storage import User
+from .storage import User, db
 from . import (project_info, allowed_types, all_word_types, word_types,
                restore_types, flipped_chars, allowed_commands, report_event)
 
@@ -127,7 +128,7 @@ def get_parser():
 
 def check_user(args):
     """Return authenticated user token data."""
-    user = User.query.get(args['user_id'])
+    user = db.session.get(User, args['user_id'])
 
     # Validate user and team
     if not user or user.team != args['team_id']:
@@ -139,19 +140,14 @@ def check_user(args):
 
 def is_valid_token(token):
     """Check that the user has a valid token."""
-    auth = Auth(token)
+    client = WebClient(token=token)
 
     try:
         # Make request
-        result = auth.test()
-    except Error as err:
+        client.auth_test()
+    except SlackApiError as err:
         # Check for auth errors
-        report_event(str(err), {})
-        return False
-
-    # Check for further errors
-    if not result.successful:
-        report_event('token_invalid', {'result': result.__dict__})
+        report_event(err.response['error'], {})
         return False
 
     # Return successful
@@ -194,20 +190,19 @@ def do_flip(flip_type, flip_word=None):
 
 def send_flip(token, table, args):
     """Post the flip as the authenticated user in Slack."""
-    chat = Chat(token)
+    client = WebClient(token=token)
 
     try:
         # Attempt to post message
-        chat.post_message(
-            args['channel_id'],
-            table,
-            username=args['user_id'],
-            as_user=True
+        client.chat_postMessage(
+            channel=args['channel_id'],
+            text=table
         )
-    except Error as err:
+    except SlackApiError as err:
         # Report if we got any errors
-        report_event(str(err), {'table': table, 'args': args})
-        return f"{project_info['name']} encountered an error: {str(err)}"
+        error = err.response['error']
+        report_event(error, {'table': table, 'args': args})
+        return f"{project_info['name']} encountered an error: {error}"
 
     # Return without errors
     return None

@@ -17,7 +17,8 @@ from datetime import timedelta
 from urllib.parse import urlencode
 
 from flask import abort
-from slacker import OAuth, Auth, Error
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 
 from .storage import User, Team, db
@@ -32,8 +33,9 @@ def get_redirect(scope='user'):
     """Generate Slack authentication URL."""
     state_token = generator.dumps(project_info['client_id'])
 
-    # Setup scope
+    # Setup scope (team installs request bot scopes, users request user scopes)
     scope_type = f'{scope}_scope'
+    scope_param = 'user_scope' if scope == 'user' else 'scope'
 
     # Setup return URL
     return_url = f'{scope}_url'
@@ -42,7 +44,7 @@ def get_redirect(scope='user'):
     params = urlencode({
         'client_id': project_info['client_id'],
         'redirect_uri': project_info[return_url],
-        'scope': ' '.join(project_info[scope_type]),
+        scope_param: ' '.join(project_info[scope_type]),
         'state': state_token
     })
 
@@ -83,58 +85,48 @@ def validate_state(state):
 
 def get_token(code, scope='user'):
     """Request a token from the Slack API."""
-    oauth = OAuth()
+    client = WebClient()
 
     # Setup return URL
     return_url = f'{scope}_url'
 
     try:
         # Attempt to make request
-        result = oauth.access(
+        result = client.oauth_v2_access(
             client_id=project_info['client_id'],
             client_secret=project_info['client_secret'],
             redirect_uri=project_info[return_url],
             code=code
         )
 
-    except Error as err:
+    except SlackApiError as err:
         report_event('oauth_error', {
             'code': code,
             'return_url': return_url,
-            'error': str(err)
+            'error': err.response['error']
         })
         abort(400)
 
-    if not result.successful:
-        report_event('oauth_unsuccessful', {
-            'code': code,
-            'return_url': return_url,
-            'result': result.__dict__
-        })
-        abort(400)
+    # Return user token or bot token
+    if scope == 'user':
+        return result['authed_user']['access_token']
 
-    # Return token
-    return result.body['access_token']
+    return result['access_token']
 
 
 def validate_token(token):
     """Validate token and retrieves info from Slack API."""
-    auth = Auth(token)
+    client = WebClient(token=token)
 
     try:
         # Make request
-        result = auth.test()
-    except Error as err:
-        report_event(str(err), {})
-        abort(400)
-
-    # Check for errors
-    if not result.successful:
-        report_event('token_invalid', {'result': result.__dict__})
+        result = client.auth_test()
+    except SlackApiError as err:
+        report_event(err.response['error'], {})
         abort(400)
 
     # Return user info
-    return result.body
+    return result.data
 
 
 def store_user(token, info):
@@ -168,7 +160,7 @@ def store_user(token, info):
 
 def store_team(token, info):
     """Store a validated team in the database."""
-    team = Team.query.get(info['team_id'])
+    team = db.session.get(Team, info['team_id'])
 
     if team is None:
         # Create new team
